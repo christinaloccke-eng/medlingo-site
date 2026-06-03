@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 727 186" width="727" height="186" role="img" aria-label="MedLingo — clinical fluency, by design">
+<defs></defs>
+<g transform="translate(18,18) scale(0.58594)">
+<path fill="#7C8CF8" d="M79.36 0 H176.64 A79.36 79.36 0 0 1 256 79.36 V176.64 A79.36 79.36 0 0 1 176.64 256 H17.92 A17.92 17.92 0 0 1 0 238.08 V79.36 A79.36 79.36 0 0 1 79.36 0 Z"></path>
+<rect x="102.4" y="64" width="51.2" height="128" rx="10.24" fill="#FFFFFF"></rect>
+<rect x="64" y="102.4" width="128" height="51.2" rx="10.24" fill="#FFFFFF"></rect>
+</g>
+<text x="212" y="119.8" font-family="NewsreaderL,serif" font-size="116" font-weight="400">
+<tspan fill="#0E1116">Med</tspan><tspan font-style="italic" fill="#5B66D6">Lingo</tspan>
+</text>
+<text x="214.0" y="149.8" font-family="DMSansL,sans-serif" font-size="17" font-weight="500" letter-spacing="3.2" fill="#8A92A0">CLINICAL FLUENCY, BY DESIGN</text>
+</svg>

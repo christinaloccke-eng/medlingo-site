@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedLingo — Become fluent in your own care.</title>
+<meta name="description" content="MedLingo is an XR-based, gamified health literacy and patient education platform that turns complex medical information into interactive, age-appropriate experiences for patients, caregivers, and clinicians.">
+<meta name="theme-color" content="#f7f4ee">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="MedLingo — Become fluent in your own care.">
+<meta property="og:description" content="An XR-based, gamified platform that makes the language of health understandable — for patients, caregivers, and clinicians.">
+<meta property="og:image" content="assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500;1,6..72,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ===================== Header ===================== -->
+<header class="site-header">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="MedLingo home">
+      <img class="brand__mark" src="assets/medlingo-mark.svg" alt="" width="30" height="30">
+      <span class="brand__word">Med<span class="lingo">Lingo</span></span>
+    </a>
+    <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <span aria-hidden="true"></span>
+    </button>
+    <nav class="nav__links" id="navLinks" aria-label="Primary">
+      <a href="#problem">Problem</a>
+      <a href="#approach">Approach</a>
+      <a href="#demos">Demos</a>
+      <a href="#team">Team</a>
+      <a class="btn btn--primary" href="#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<span id="top"></span>
+
+<!-- ===================== Hero ===================== -->
+<section class="hero">
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <p class="eyebrow">XR-based health literacy &amp; patient education</p>
+      <h1>Become fluent in<br>your <em>own care.</em></h1>
+      <p class="hero__sub">MedLingo turns complex medical information into interactive, age-appropriate experiences — so patients, caregivers, and clinicians can communicate their health care.</p>
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="#demos">See it in action <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn--ghost" href="#contact">Get in touch</a>
+      </div>
+      <div class="hero__trust">
+        <span>Grounded in health literacy research</span>
+        <span>No protected health information</span>
+      </div>
+    </div>
+
+    <!-- On-brand product mockup (no external dependencies) -->
+    <div class="device" aria-hidden="true">
+      <div class="device__screen">
+        <div class="device__bar"><span>MedLingo</span><span>9:41</span></div>
+        <div class="device__body">
+          <div class="lesson-kicker">Heart attack · Plain language</div>
+          <div class="lesson-art">
+            <svg viewBox="0 0 335 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustrative heart model">
+              <defs>
+                <radialGradient id="hg" cx="45%" cy="40%" r="62%">
+                  <stop offset="0%" stop-color="#d4694a"/>
+                  <stop offset="58%" stop-color="#b13c20"/>
+                  <stop offset="100%" stop-color="#6e1f12"/>
+                </radialGradient>
+              </defs>
+              <rect width="335" height="250" fill="#0d1f1a"/>
+              <ellipse cx="167" cy="148" rx="78" ry="72" fill="url(#hg)" opacity="0.95"/>
+              <path d="M167 220 C130 195 100 175 90 155 C80 135 82 115 95 108 C108 101 125 108 135 120 C140 128 145 135 150 140 C155 133 162 122 170 112 C178 102 192 96 204 100 C218 105 226 120 222 140 C218 158 200 178 167 220Z" fill="url(#hg)"/>
+              <path d="M100 125 C92 118 88 108 90 100 C93 90 102 85 112 87 C118 88 124 93 128 100" stroke="#e0a06a" stroke-width="7" fill="none" stroke-linecap="round" opacity="0.85"/>
+              <path d="M199 110 C210 108 220 114 224 124 C228 134 224 145 216 150" stroke="#e0a06a" stroke-width="7" fill="none" stroke-linecap="round" opacity="0.75"/>
+              <circle cx="128" cy="100" r="13" fill="none" stroke="#f1b24a" stroke-width="2.5"/>
+              <circle cx="128" cy="100" r="5" fill="#f1b24a"/>
+              <text x="210" y="62" font-size="11" fill="rgba(244,234,222,.85)" font-family="'DM Sans', system-ui, sans-serif">Blockage</text>
+              <line x1="142" y1="92" x2="198" y2="60" stroke="#f1b24a" stroke-width="1.4" stroke-dasharray="4,3"/>
+            </svg>
+          </div>
+          <div class="lesson-callout">
+            <span class="lbl">Say this to your patient</span>
+            <p>“Think of your heart as a pump. One of the pipes feeding it is blocked — like a clog in a hose.”</p>
+          </div>
+          <div class="lesson-meta">
+            <span class="pill">Patient-ready</span>
+            <span class="pill pill--blue">Reading level: auto</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== The Problem ===================== -->
+<section class="section section--tint problem" id="problem">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">The problem</p>
+      <h2>Most people are asked to manage their health in a language they were never taught.</h2>
+    </div>
+    <p class="lead"><strong>Nearly nine in ten U.S. adults have difficulty using the everyday health information they're given</strong> — and the burden falls hardest on those already most at risk. Yet patient education still leans on dense pamphlets, rushed appointments, and instructions written for clinicians rather than the people trying to follow them. When understanding breaks down, so does care: missed medications, skipped follow-ups, and outcomes that were never inevitable.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat__num">88%</div>
+        <div class="stat__label">of U.S. adults</div>
+        <p class="stat__desc">lack proficient health literacy — leaving most people navigating their care without a clear map.</p>
+      </div>
+      <div class="stat">
+        <div class="stat__num">40–60%</div>
+        <div class="stat__label">of medical information</div>
+        <p class="stat__desc">is forgotten or misunderstood almost immediately after a clinical visit.</p>
+      </div>
+      <div class="stat">
+        <div class="stat__num">$349B</div>
+        <div class="stat__label">annual U.S. cost</div>
+        <p class="stat__desc">in readmissions, missed adherence, and decisions made on incomplete information.</p>
+      </div>
+    </div>
+    <p class="source-note">Figures from MedLingo's research review — placeholders for your final cited sources.</p>
+  </div>
+</section>
+
+<!-- ===================== Our Approach ===================== -->
+<section class="section approach" id="approach">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">Our approach</p>
+      <h2>The language of health, made understandable.</h2>
+    </div>
+    <div class="approach-grid">
+      <article class="appr-card">
+        <div class="appr-card__icon i-lav" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v4M3 5h4M6 17v4M4 19h4"/><path d="M13 4l2.5 5.5L21 12l-5.5 2.5L13 20l-2.5-5.5L5 12l5.5-2.5L13 4z"/></svg>
+        </div>
+        <h3>Learning through play</h3>
+        <p>Gamified, XR-based modules turn dense clinical jargon into learning experiences that patients will finish and remember.</p>
+      </article>
+      <article class="appr-card">
+        <div class="appr-card__icon i-mint" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7M9 11h5"/></svg>
+        </div>
+        <h3>Built on the evidence</h3>
+        <p>Grounded in established health literacy research, so every module rests on methods that have been studied and shown to work.</p>
+      </article>
+      <article class="appr-card">
+        <div class="appr-card__icon i-amber" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17.5" cy="9" r="2.6"/><path d="M16 14.2A5.5 5.5 0 0 1 21.5 19"/></svg>
+        </div>
+        <h3>Made for every role</h3>
+        <p>Distinct experiences for patients, caregivers, and clinicians — each meeting them where they are and guiding them toward clear objectives.</p>
+      </article>
+      <article class="appr-card">
+        <div class="appr-card__icon i-rose" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l7.5 3v5c0 5-3.4 8.4-7.5 10.5C7.9 18.9 4.5 15.5 4.5 10.5v-5L12 2.5z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <h3>Privacy by design</h3>
+        <p>No protected health information. Lessons and modules are safe to use anywhere, from clinic to living room.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== Live Demos ===================== -->
+<!--
+  Demo section is grouped by user. To add a module later, copy a
+  <a class="demo-card"> block inside the relevant .demo-grid (or add a new
+  .demo-group). External links open in a new tab; internal subpages don't.
+-->
+<section class="section section--tint demos" id="demos">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">Live demos</p>
+      <h2>See it in action.</h2>
+      <p class="lead">The same appointment, experienced from every angle. Open a working prototype below.</p>
+    </div>
+
+    <!-- Group: Everyone -->
+    <div class="demo-group">
+      <h3 class="demo-group__label">Start here · Everyone</h3>
+      <div class="demo-grid">
+        <a class="demo-card" href="https://newcardiacpatient.netlify.app/" target="_blank" rel="noopener">
+          <span class="demo-card__arrow" aria-hidden="true">↗</span>
+          <span class="demo-card__title">Introduction to the app</span>
+          <span class="demo-card__desc">How MedLingo works.</span>
+          <span class="demo-card__ext">Live prototype</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Group: Patients -->
+    <div class="demo-group">
+      <h3 class="demo-group__label">For patients</h3>
+      <div class="demo-grid">
+        <a class="demo-card" href="/gh-test/">
+          <span class="demo-card__arrow" aria-hidden="true">→</span>
+          <span class="demo-card__title">Clinical test overview (GH Test)</span>
+          <span class="demo-card__desc">Understand what a clinical test involves, step by step.</span>
+          <span class="demo-card__ext">Interactive module</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Group: Caregivers -->
+    <div class="demo-group">
+      <h3 class="demo-group__label">For caregivers</h3>
+      <div class="demo-grid">
+        <a class="demo-card" href="https://caregivermtxmodule.netlify.app/" target="_blank" rel="noopener">
+          <span class="demo-card__arrow" aria-hidden="true">↗</span>
+          <span class="demo-card__title">Caregiver interface</span>
+          <span class="demo-card__desc">A caregiver's guide to managing your child's weekly methotrexate — real strategies from families who've been there.</span>
+          <span class="demo-card__ext">Live prototype</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Group: Providers -->
+    <div class="demo-group">
+      <h3 class="demo-group__label">For providers</h3>
+      <div class="demo-grid">
+        <a class="demo-card" href="https://cardiologistinterface.netlify.app/" target="_blank" rel="noopener">
+          <span class="demo-card__arrow" aria-hidden="true">↗</span>
+          <span class="demo-card__title">Clinician interface</span>
+          <span class="demo-card__desc">See how clinicians assign, track, and reinforce patient understanding.</span>
+          <span class="demo-card__ext">Live prototype</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== Team ===================== -->
+<section class="section team" id="team">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">Founding team</p>
+      <h2>Lived experience. Professional expertise. Clinical access.</h2>
+    </div>
+    <div class="team-grid">
+      <article class="member">
+        <div class="avatar" data-initials="CL">
+          <img src="assets/christina.jpg" alt="Christina Loccke" onerror="this.remove()">
+        </div>
+        <h3>Christina Loccke, MA Ed</h3>
+        <p class="member__role">Founder &amp; CEO</p>
+        <p class="member__bio">Educator, published researcher, NIH award winner, and pediatric rare-disease advocate, with a decade of lived experience as a parent in the rare-disease system.</p>
+      </article>
+      <article class="member">
+        <div class="avatar" data-initials="MS"></div>
+        <h3>Melissa Skolnik, MBA, MS</h3>
+        <p class="member__role">Business &amp; Strategy Lead</p>
+        <p class="member__bio">Strategic health-tech product leader with 13+ years across healthcare AI strategy, complex operational workflows, and HIPAA/CMS compliance.</p>
+      </article>
+      <article class="member">
+        <div class="avatar" data-initials="KC"></div>
+        <h3>Karen Ceresnak, RN</h3>
+        <p class="member__role">Clinical &amp; Caregiver Lead</p>
+        <p class="member__bio">RN at Stanford and founder of a national foundation for children with scleroderma, with lived experience as caregiver of a child with complex medical needs.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== Contact ===================== -->
+<section class="section section--tint contact" id="contact">
+  <div class="wrap contact__inner">
+    <p class="eyebrow" style="justify-content:center;">Get in touch</p>
+    <h2>Let's give every patient a <em>shared language</em> with their doctor.</h2>
+    <a class="contact__email" href="mailto:christinaloccke@gmail.com">christinaloccke@gmail.com</a>
+    <div class="contact__row">
+      <a class="btn btn--primary" href="mailto:christinaloccke@gmail.com">Email us <span class="arrow" aria-hidden="true">→</span></a>
+      <a class="contact__phone" href="tel:+19734878216">973 · 487 · 8216</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== Footer ===================== -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div>
+        <a class="brand" href="#top" aria-label="MedLingo home">
+          <img class="brand__mark" src="assets/medlingo-mark.svg" alt="" width="30" height="30">
+          <span class="brand__word">Med<span class="lingo">Lingo</span></span>
+        </a>
+        <p class="footer__tag">Clinical fluency, by design.</p>
+      </div>
+      <nav class="footer__links" aria-label="Footer">
+        <a href="#problem">Problem</a>
+        <a href="#approach">Approach</a>
+        <a href="#demos">Demos</a>
+        <a href="#team">Team</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+    <div class="footer__bottom">
+      <p>© <span id="year">2026</span> MedLingo · XR-based health literacy &amp; patient education</p>
+      <p class="footer__phi">No protected health information</p>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

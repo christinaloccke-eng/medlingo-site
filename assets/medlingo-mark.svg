@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="MedLingo">
+  <path fill="#7C8CF8" d="M79.36 0 H176.64 A79.36 79.36 0 0 1 256 79.36 V176.64 A79.36 79.36 0 0 1 176.64 256 H17.92 A17.92 17.92 0 0 1 0 238.08 V79.36 A79.36 79.36 0 0 1 79.36 0 Z"></path>
+  <rect x="102.4" y="64" width="51.2" height="128" rx="10.24" fill="#FFFFFF"></rect>
+  <rect x="64" y="102.4" width="128" height="51.2" rx="10.24" fill="#FFFFFF"></rect>
+</svg>

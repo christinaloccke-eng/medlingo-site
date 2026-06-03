@@ -1,0 +1,2020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedLingo — GH Stim Test · Phase 4 Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1a18;
+    --ink-mid: #4a4a44;
+    --ink-light: #8a8a80;
+    --ink-faint: #b5b1a8;
+    --paper: #f7f4ee;
+    --paper-warm: #ede9df;
+    --paper-dark: #e2ddd3;
+    --paper-deep: #d6cfc2;
+
+    --accent: #c4530a;
+    --accent-light: #f0e8df;
+    --accent-soft: #fbf3e9;
+
+    --teal: #1a6b5a;
+    --teal-light: #dff0eb;
+    --amber: #8b5e08;
+    --amber-light: #f5eddb;
+    --blue: #1a4a7a;
+    --blue-light: #deeaf5;
+    --green: #2d5a1a;
+    --green-light: #e4f0dc;
+    --rose: #8a1a3a;
+    --rose-light: #f3dde4;
+
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+    --mono: 'DM Mono', monospace;
+
+    --shadow-sm: 0 1px 3px rgba(26,26,24,.06);
+    --shadow-md: 0 4px 16px rgba(26,26,24,.08);
+    --shadow-lg: 0 12px 36px rgba(26,26,24,.16);
+
+    /* D1 · user-adjustable text scale (1 = default, set live from the A−/A/A+ control) */
+    --fs: 1;
+  }
+
+  html, body { height: 100%; }
+  body {
+    font-family: var(--sans);
+    background: var(--paper-warm);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  button:disabled { cursor: not-allowed; opacity: .55; }
+
+  /* ───── App frame ───── */
+  .app {
+    max-width: 480px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--paper);
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (min-width: 720px) {
+    .app { margin-top: 2rem; margin-bottom: 2rem; min-height: calc(100vh - 4rem); border-radius: 14px; }
+    body { padding: 0 1rem; }
+  }
+
+  /* ───── Onboarding ───── */
+  .onb {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.75rem 1.5rem;
+  }
+
+  .onb-step-indicator {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 2rem;
+  }
+  .onb-step-dot {
+    flex: 1;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--paper-dark);
+    transition: background .3s;
+  }
+  .onb-step-dot.done { background: var(--accent); }
+  .onb-step-dot.current { background: var(--ink); }
+
+  .onb-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: .8rem;
+  }
+
+  .onb-title {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: .6rem;
+    color: var(--ink);
+  }
+  .onb-title em { font-style: italic; color: var(--accent); }
+
+  .onb-sub {
+    font-size: 14px;
+    color: var(--ink-mid);
+    margin-bottom: 2rem;
+    line-height: 1.55;
+  }
+
+  .onb-options { display: flex; flex-direction: column; gap: .55rem; }
+
+  .onb-opt {
+    text-align: left;
+    background: var(--paper);
+    border: 1px solid var(--paper-dark);
+    border-radius: 8px;
+    padding: 1rem 1.1rem;
+    transition: all .15s;
+    display: flex;
+    align-items: flex-start;
+    gap: .85rem;
+  }
+  .onb-opt:hover { border-color: var(--ink-mid); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+  .onb-opt:active { transform: translateY(0); }
+
+  .onb-opt-icon {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--paper-warm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: var(--serif);
+    font-size: 16px;
+    color: var(--ink-mid);
+  }
+  .onb-opt-body { flex: 1; min-width: 0; }
+  .onb-opt-title { font-size: 14.5px; font-weight: 500; color: var(--ink); line-height: 1.3; }
+  .onb-opt-sub { font-size: 12px; color: var(--ink-light); margin-top: 2px; line-height: 1.4; }
+
+  .onb-back {
+    align-self: flex-start;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    color: var(--ink-light);
+    margin-bottom: 1rem;
+    padding: 4px 0;
+  }
+  .onb-back:hover { color: var(--ink); }
+
+  /* ───── Status bar (top of phase 4) ───── */
+  .status {
+    background: var(--ink);
+    color: var(--paper);
+    padding: .85rem 1.25rem .75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .status-left { display: flex; flex-direction: column; gap: 2px; }
+  .status-phase {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .status-step {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .status-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+  .status-clock {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: .04em;
+  }
+  .status-meta {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .12em;
+    color: rgba(247,244,238,.7);
+    text-transform: uppercase;
+  }
+
+  /* ───── Demo control strip ───── */
+  .demobar {
+    background: var(--paper-warm);
+    border-bottom: 1px solid var(--paper-dark);
+    padding: .5rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .08em;
+    color: var(--ink-mid);
+    text-transform: uppercase;
+  }
+  .demobar-tag {
+    background: var(--accent);
+    color: var(--paper);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 9px;
+    letter-spacing: .12em;
+  }
+  .demobar-controls { margin-left: auto; display: flex; gap: 6px; }
+  .demobar-btn {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    padding: 4px 8px;
+    border-radius: 3px;
+    background: var(--paper);
+    border: 1px solid var(--paper-dark);
+    color: var(--ink-mid);
+    letter-spacing: .06em;
+  }
+  .demobar-btn:hover { border-color: var(--ink-mid); }
+  .demobar-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  /* ───── Voice preview switch ───── */
+  .voicebar {
+    background: var(--paper);
+    border-bottom: 1px solid var(--paper-dark);
+    padding: .55rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    flex-wrap: wrap;
+  }
+  .voicebar-label {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+  .voicebar-btn {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    background: var(--paper-warm);
+    color: var(--ink-mid);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  .voicebar-btn.active { background: var(--ink); color: var(--paper); }
+
+  /* ───── Main scroll content ───── */
+  .main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.25rem 1.25rem 6rem;
+  }
+
+  /* ───── Timeline ───── */
+  .tl-section { margin-bottom: 1.5rem; }
+  .section-head {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: .6rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-head::after { content:''; flex:1; height:1px; background: var(--paper-dark); }
+
+  .tl-card {
+    background: var(--paper);
+    border: 1px solid var(--paper-dark);
+    border-radius: 10px;
+    padding: 1rem 1.1rem 1.1rem;
+  }
+
+  .tl-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: .1em;
+    color: var(--ink-light);
+    margin-bottom: .75rem;
+    text-transform: uppercase;
+  }
+
+  .tl-track {
+    position: relative;
+    height: 60px;
+    margin: 0 4px 4px;
+  }
+
+  .tl-line {
+    position: absolute;
+    top: 28px;
+    left: 0; right: 0;
+    height: 2px;
+    background: var(--paper-dark);
+    border-radius: 1px;
+  }
+
+  .tl-line-fill {
+    position: absolute;
+    top: 28px;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent));
+    border-radius: 1px;
+    transition: width .5s ease;
+  }
+
+  .tl-tick {
+    position: absolute;
+    top: 22px;
+    transform: translateX(-50%);
+    cursor: pointer;
+  }
+
+  .tl-tick-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 2px solid var(--paper-deep);
+    transition: all .2s;
+  }
+  .tl-tick.done .tl-tick-dot { background: var(--accent); border-color: var(--accent); }
+  .tl-tick.active .tl-tick-dot {
+    background: var(--ink);
+    border-color: var(--ink);
+    box-shadow: 0 0 0 4px rgba(26,26,24,.12);
+  }
+  .tl-tick.upcoming .tl-tick-dot { background: var(--paper); }
+
+  .tl-tick-label {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    color: var(--ink-light);
+    white-space: nowrap;
+  }
+  .tl-tick.active .tl-tick-label { color: var(--ink); font-weight: 500; }
+
+  .tl-pointer {
+    position: absolute;
+    top: -2px;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--accent);
+    letter-spacing: .08em;
+    transition: left .5s ease;
+    font-weight: 500;
+  }
+
+  /* ───── Current step card ───── */
+  .step {
+    background: linear-gradient(135deg, var(--accent-soft), var(--paper));
+    border: 1px solid var(--paper-dark);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 1.1rem 1.2rem 1.3rem;
+    margin-bottom: 1rem;
+  }
+  .step-eyebrow {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: .35rem;
+  }
+  .step-title {
+    font-family: var(--serif);
+    font-size: calc(20px * var(--fs));
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: .55rem;
+    color: var(--ink);
+  }
+  .step-body {
+    font-size: calc(14px * var(--fs));
+    color: var(--ink-mid);
+    line-height: 1.6;
+    margin-bottom: .85rem;
+  }
+  .step-body .term {
+    border-bottom: 1px dashed var(--ink-faint);
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .step-body .term:hover { border-bottom-style: solid; color: var(--accent); }
+
+  .step-actions { display: flex; gap: .5rem; flex-wrap: wrap; }
+  .chip {
+    font-size: 12px;
+    background: var(--paper);
+    border: 1px solid var(--paper-dark);
+    color: var(--ink-mid);
+    padding: 6px 12px;
+    border-radius: 999px;
+    transition: all .15s;
+    font-weight: 500;
+  }
+  .chip:hover { border-color: var(--ink-mid); color: var(--ink); }
+  .chip.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .chip.primary:hover { background: var(--accent); border-color: var(--accent); }
+
+  /* ───── Listen button (audio TTS) ───── */
+  .listen {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 1px solid var(--paper-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-mid);
+    font-size: 13px;
+  }
+  .listen:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .listen.speaking { background: var(--accent); color: var(--paper); border-color: var(--accent); }
+
+  .step { position: relative; }
+
+  /* ───── Logged symptoms list ───── */
+  .log {
+    background: var(--paper);
+    border: 1px solid var(--paper-dark);
+    border-radius: 10px;
+    padding: .9rem 1.1rem 1rem;
+    margin-bottom: 1rem;
+  }
+  .log-head {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: .5rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  .log-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 0;
+    border-bottom: 1px dashed var(--paper-dark);
+    font-size: 13px;
+  }
+  .log-row:last-child { border-bottom: none; }
+  .log-row-left { display: flex; gap: 8px; align-items: center; }
+  .log-row-time { font-family: var(--mono); font-size: 11px; color: var(--ink-light); }
+  .log-row-symptom { color: var(--ink); font-weight: 500; }
+  .log-tier {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    padding: 2px 7px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+  .log-tier.t1 { background: var(--amber-light); color: var(--amber); }
+  .log-tier.t2 { background: var(--accent-light); color: var(--accent); }
+  .log-tier.t3 { background: var(--rose-light); color: var(--rose); }
+
+  /* ───── Action dock ───── */
+  .dock {
+    position: sticky;
+    bottom: 0;
+    left: 0; right: 0;
+    background: var(--paper);
+    border-top: 1px solid var(--paper-dark);
+    padding: .7rem 1rem .9rem;
+    display: flex;
+    gap: .55rem;
+    box-shadow: 0 -4px 12px rgba(26,26,24,.04);
+  }
+
+  .dock-btn {
+    flex: 1;
+    padding: .85rem .7rem;
+    border-radius: 10px;
+    background: var(--paper-warm);
+    border: 1px solid var(--paper-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    transition: all .15s;
+  }
+  .dock-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+  .dock-btn-icon { font-size: 16px; line-height: 1; }
+  .dock-btn-label { font-size: 11px; font-weight: 500; color: var(--ink-mid); letter-spacing: .02em; }
+  .dock-btn.primary { background: var(--ink); border-color: var(--ink); }
+  .dock-btn.primary .dock-btn-label { color: var(--paper); }
+  .dock-btn.primary .dock-btn-icon { color: var(--accent); }
+
+  /* ───── Sheet (modal) ───── */
+  .sheet-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(26,26,24,.45);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 100;
+    animation: fadeIn .2s;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .sheet {
+    background: var(--paper);
+    width: 100%;
+    max-width: 480px;
+    max-height: 85vh;
+    overflow-y: auto;
+    border-radius: 16px 16px 0 0;
+    padding: 1.5rem 1.5rem 2rem;
+    animation: slideUp .3s cubic-bezier(.16,.84,.44,1);
+    position: relative;
+  }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+  @media (min-width: 720px) {
+    .sheet-backdrop { align-items: center; }
+    .sheet { border-radius: 16px; max-height: 80vh; }
+  }
+
+  .sheet-handle {
+    width: 36px; height: 4px;
+    background: var(--paper-deep);
+    border-radius: 2px;
+    margin: -.25rem auto 1rem;
+  }
+  .sheet-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: .4rem;
+  }
+  .sheet-title {
+    font-family: var(--serif);
+    font-size: calc(22px * var(--fs));
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: .6rem;
+  }
+  .sheet-body {
+    font-size: calc(14px * var(--fs));
+    color: var(--ink-mid);
+    line-height: 1.6;
+  }
+  .sheet-close {
+    position: absolute;
+    top: 1.1rem;
+    right: 1.25rem;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--paper-warm);
+    color: var(--ink-mid);
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sheet-close:hover { background: var(--ink); color: var(--paper); }
+
+  /* ───── Symptom check-in grid ───── */
+  .sx-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .55rem;
+    margin: 1rem 0;
+  }
+  .sx-btn {
+    background: var(--paper-warm);
+    border: 1px solid var(--paper-dark);
+    border-radius: 10px;
+    padding: .9rem .85rem;
+    text-align: left;
+    transition: all .15s;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .sx-btn:hover { transform: translateY(-1px); border-color: var(--ink-mid); }
+  .sx-btn-emoji { font-size: 22px; line-height: 1; margin-bottom: 4px; }
+  .sx-btn-name { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .sx-btn-tier { font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; color: var(--ink-light); text-transform: uppercase; }
+  .sx-btn.t1 { background: var(--amber-light); }
+  .sx-btn.t2 { background: var(--accent-light); }
+  .sx-btn.t3 { background: var(--rose-light); }
+  .sx-btn.t3 .sx-btn-tier { color: var(--rose); }
+
+  .sx-feel-good {
+    background: var(--green-light);
+    border: 1px solid var(--paper-dark);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    margin-top: .5rem;
+  }
+  .sx-feel-good-title { font-family: var(--serif); font-size: 15px; font-weight: 600; color: var(--green); }
+  .sx-feel-good-sub { font-size: 12.5px; color: var(--ink-mid); margin-top: 4px; }
+
+  /* ───── Decision tree sheet ───── */
+  .tree-tier-bar {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: .8rem;
+  }
+  .tree-tier-bar.t1 { background: var(--amber-light); color: var(--amber); }
+  .tree-tier-bar.t2 { background: var(--accent-light); color: var(--accent); }
+  .tree-tier-bar.t3 { background: var(--rose-light); color: var(--rose); }
+
+  .tree-actions {
+    background: var(--paper-warm);
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+    margin-top: 1rem;
+  }
+  .tree-action-row {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--paper-dark);
+    align-items: flex-start;
+  }
+  .tree-action-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .tree-action-row:first-child { padding-top: 0; }
+  .tree-action-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-light);
+    flex-shrink: 0;
+    min-width: 18px;
+    padding-top: 2px;
+  }
+  .tree-action-text { font-size: calc(13.5px * var(--fs)); color: var(--ink); line-height: 1.5; }
+
+  .tree-cta-row {
+    display: flex;
+    gap: .55rem;
+    margin-top: 1.1rem;
+  }
+  .tree-cta {
+    flex: 1;
+    padding: .85rem 1rem;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 500;
+    text-align: center;
+    transition: all .15s;
+  }
+  .tree-cta-primary { background: var(--ink); color: var(--paper); }
+  .tree-cta-primary:hover { background: var(--accent); }
+  .tree-cta-primary.t3 { background: var(--rose); }
+  .tree-cta-secondary { background: var(--paper-warm); color: var(--ink); border: 1px solid var(--paper-dark); }
+
+  /* ───── Medication sheet ───── */
+  .med {
+    background: var(--paper-warm);
+    border-radius: 10px;
+    padding: 1rem 1.15rem;
+    margin-bottom: .65rem;
+    border-left: 3px solid var(--teal);
+  }
+  .med:nth-child(2) { border-left-color: var(--blue); }
+  .med-name {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--teal);
+    margin-bottom: 2px;
+  }
+  .med:nth-child(2) .med-name { color: var(--blue); }
+  .med-route {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: .5rem;
+  }
+  .med-what { font-size: calc(13.5px * var(--fs)); color: var(--ink-mid); line-height: 1.55; }
+  .med-feel {
+    font-size: calc(12.5px * var(--fs));
+    color: var(--ink);
+    background: var(--paper);
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-top: .55rem;
+    border-left: 2px solid var(--paper-deep);
+  }
+  .med-feel-label {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 3px;
+  }
+
+  /* ───── IV walkthrough stub ───── */
+  .iv-stub {
+    background: linear-gradient(135deg, var(--blue-light), var(--paper));
+    border: 1px dashed var(--blue);
+    border-radius: 10px;
+    padding: 1.5rem 1.25rem;
+    text-align: center;
+    margin: .5rem 0;
+  }
+  .iv-stub-label {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: .35rem;
+  }
+  .iv-stub-title {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--blue);
+    margin-bottom: .6rem;
+  }
+  .iv-stub-body {
+    font-size: 13px;
+    color: var(--ink-mid);
+    line-height: 1.6;
+    margin-bottom: .85rem;
+  }
+  .iv-stub-svg {
+    margin: 0 auto;
+    max-width: 220px;
+  }
+
+  /* ───── Glossary ───── */
+  .gloss-list { display: flex; flex-direction: column; gap: .5rem; margin-top: 1rem; }
+  .gloss-item {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: .8rem 1rem;
+  }
+  .gloss-term {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .gloss-pron {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-light);
+    margin-bottom: 4px;
+    letter-spacing: .04em;
+  }
+  .gloss-def { font-size: calc(13px * var(--fs)); color: var(--ink-mid); line-height: 1.55; }
+  .gloss-listen {
+    float: right;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 1px solid var(--paper-dark);
+    color: var(--ink-mid);
+    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ───── Activity branch ───── */
+  .act-list { display: flex; flex-direction: column; gap: .5rem; margin: 1rem 0; }
+  .act-item {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: .85rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+  }
+  .act-emoji { font-size: 22px; }
+  .act-body { flex: 1; }
+  .act-title { font-size: 13.5px; font-weight: 500; color: var(--ink); }
+  .act-sub { font-size: 11.5px; color: var(--ink-light); margin-top: 1px; }
+
+  /* ───── Text-size control (D1) ───── */
+  .fs-control { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+  .fs-label {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-right: 2px;
+  }
+  .fs-btn {
+    font-family: var(--mono);
+    width: 26px; height: 24px;
+    border-radius: 6px;
+    background: var(--paper-warm);
+    border: 1px solid var(--paper-dark);
+    color: var(--ink-mid);
+    line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .fs-btn:hover { border-color: var(--ink-mid); color: var(--ink); }
+  .fs-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .fs-btn.sm { font-size: 11px; }
+  .fs-btn.md { font-size: 13px; }
+  .fs-btn.lg { font-size: 16px; }
+
+  /* ───── Orientation card (E5) ───── */
+  .orient {
+    background: var(--blue-light);
+    border: 1px solid var(--paper-dark);
+    border-left: 3px solid var(--blue);
+    border-radius: 10px;
+    padding: 1rem 1.1rem 1.1rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .orient-eyebrow {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: .4rem;
+  }
+  .orient-title {
+    font-family: var(--serif);
+    font-size: calc(17px * var(--fs));
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: .6rem;
+  }
+  .orient-row {
+    display: flex; gap: 9px; align-items: flex-start;
+    font-size: calc(13px * var(--fs));
+    color: var(--ink-mid);
+    line-height: 1.5;
+    padding: 4px 0;
+  }
+  .orient-row b { color: var(--ink); font-weight: 600; }
+  .orient-dismiss {
+    margin-top: .85rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 7px 14px;
+    border-radius: 8px;
+  }
+  .orient-dismiss:hover { background: var(--blue); }
+
+  /* ───── Source / About-this-information (D4) ───── */
+  .srcline {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .04em;
+    color: var(--ink-light);
+    text-align: center;
+    padding: 1.25rem 1rem .5rem;
+    line-height: 1.6;
+  }
+  .srcline button {
+    color: var(--ink-mid);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .srcline button:hover { color: var(--accent); }
+  .about-row {
+    display: flex; gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--paper-dark);
+    font-size: calc(13.5px * var(--fs));
+    line-height: 1.5;
+  }
+  .about-row:last-child { border-bottom: none; }
+  .about-label {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    flex-shrink: 0;
+    min-width: 92px;
+    padding-top: 2px;
+  }
+  .about-val { color: var(--ink); }
+  .about-note {
+    background: var(--amber-light);
+    border-radius: 8px;
+    padding: .85rem 1rem;
+    font-size: calc(13px * var(--fs));
+    color: var(--ink);
+    line-height: 1.55;
+    margin-top: 1rem;
+  }
+
+  /* ───── All-steps menu (D3) ───── */
+  .steps-list { display: flex; flex-direction: column; margin-top: 1rem; }
+  .steps-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 4px;
+    border-bottom: 1px dashed var(--paper-dark);
+    text-align: left;
+    width: 100%;
+    transition: background .12s;
+  }
+  .steps-row:last-child { border-bottom: none; }
+  .steps-row:hover { background: var(--paper-warm); }
+  .steps-row-time {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-light);
+    min-width: 38px;
+  }
+  .steps-row-label { flex: 1; font-size: calc(14px * var(--fs)); color: var(--ink); font-weight: 500; }
+  .steps-row-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+  }
+  .steps-row-tag.done { background: var(--green-light); color: var(--green); }
+  .steps-row-tag.now  { background: var(--ink); color: var(--paper); }
+  .steps-row-tag.next { background: var(--paper-warm); color: var(--ink-light); }
+
+  /* utility */
+  .stack { display: flex; flex-direction: column; gap: 1rem; }
+</style>
+</head>
+<body>
+<a href="/" aria-label="Back to MedLingo home" style="position:fixed;top:14px;left:14px;z-index:99999;display:inline-flex;align-items:center;gap:7px;padding:8px 14px;background:rgba(242,244,247,.94);backdrop-filter:blur(6px);border:1px solid #DCE1EA;border-radius:999px;color:#0E1116;font-family:'DM Sans',system-ui,-apple-system,sans-serif;font-size:13px;font-weight:600;text-decoration:none;box-shadow:0 2px 12px rgba(33,40,90,.14);">&#8592;&nbsp;MedLingo</a>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useMemo, useCallback } = React;
+
+/* ============================================================
+   CONFIG: procedure events, voice variants, glossary, symptoms
+   ============================================================ */
+
+const TOTAL_MIN = 180;  // 3 hours
+
+/* ── D4 · Source & credibility (EDIT THESE for your site) ──────────────
+   Shown to families in the "About this information" sheet so the content
+   has an identified, dated, trustworthy source — an HLE2 Web requirement. */
+const SOURCE = {
+  basis:    'The standard arginine + glucagon growth-hormone (GH) stimulation test used in pediatric endocrinology.',
+  reviewer: 'Reviewed by your hospital\u2019s pediatric endocrinology team',   // ← replace with reviewer name/role
+  reviewed: 'May 2026',                                                        // ← update at each review
+  org:      'MedLingo patient-education module',                               // ← replace with your org/clinic
+  phone:    'your clinic\u2019s number on your appointment letter',            // ← replace with clinic phone
+};
+
+const EVENTS = [
+  { tMin:  0,   id: 'arrive',     type:'milestone', label: 'Arrive & check in' },
+  { tMin:  5,   id: 'measure',    type:'milestone', label: 'Height & weight' },
+  { tMin: 10,   id: 'iv-place',   type:'milestone', label: 'IV placed in arm' },
+  { tMin: 15,   id: 'draw-1',     type:'draw',  n:1, label: 'Blood draw 1' },
+  { tMin: 15,   id: 'arg-start',  type:'med',   drug:'arginine', label: 'Arginine begins' },
+  { tMin: 30,   id: 'draw-2',     type:'draw',  n:2, label: 'Blood draw 2' },
+  { tMin: 45,   id: 'arg-end',    type:'milestone', label: 'Arginine done · saline begins' },
+  { tMin: 50,   id: 'gluc',       type:'med',   drug:'glucagon', label: 'Glucagon shot (shoulder)' },
+  { tMin: 60,   id: 'draw-3',     type:'draw',  n:3, label: 'Blood draw 3' },
+  { tMin: 90,   id: 'draw-4',     type:'draw',  n:4, label: 'Blood draw 4' },
+  { tMin: 120,  id: 'draw-5',     type:'draw',  n:5, label: 'Blood draw 5' },
+  { tMin: 150,  id: 'draw-6',     type:'draw',  n:6, label: 'Blood draw 6' },
+  { tMin: 180,  id: 'end',        type:'milestone', label: 'IV out · test complete' },
+];
+
+// Symptoms catalog from the pamphlet, sorted into tiers
+const SYMPTOMS = [
+  // Tier 1 — expected, log + reassure
+  { id:'itch',   name:'Itchy',          emoji:'🌿', tier:1 },
+  { id:'flush',  name:'Flushed / red',  emoji:'🌸', tier:1 },
+  { id:'head',   name:'Headache',       emoji:'💭', tier:1 },
+  // Tier 2 — alert nurse
+  { id:'nausea', name:'Nausea',         emoji:'🌊', tier:2 },
+  { id:'shaky',  name:'Shaky',          emoji:'🍃', tier:2 },
+  { id:'dizzy',  name:'Dizzy',          emoji:'🌀', tier:2 },
+  // Tier 3 — escalate
+  { id:'vomit',  name:'Vomiting',       emoji:'⚠️', tier:3 },
+  { id:'breath', name:'Trouble breathing', emoji:'🚨', tier:3 },
+];
+
+// Voice variants. Each piece of content has up to 4 versions.
+// keys: caregiver, teen (13+), middle (8-12), young (4-7)
+const V = {
+  // header voice tag
+  voiceTag: {
+    caregiver: 'For caregiver',
+    teen:      'For you · age 13+',
+    middle:    'For you · age 8–12',
+    young:     'For you · age 4–7',
+  },
+  // current step content keyed by event id
+  step: {
+    arrive: {
+      caregiver: { title:'Arrival & check-in', body:'You\'re here. The team will bring you back to the test room shortly. Check-in usually takes 5 minutes. A nurse will go over the plan with you before anything starts.' },
+      teen:      { title:'You just got here', body:'You\'re checked in. In a few minutes someone will take you back to the room where the test happens. They\'ll tell you what\'s coming next before they do anything.' },
+      middle:    { title:'You\'re here!', body:'You just checked in. In a few minutes, a nurse will bring you to the test room. They will tell you what they are going to do before they do it.' },
+      young:     { title:'You\'re here!', body:'A nurse will come get you soon. They will show you the room. They will tell you everything before it happens.' },
+    },
+    measure: {
+      caregiver: { title:'Height & weight', body:'The team will measure your child\'s height and weight. This takes a minute. They use these numbers along with the blood results.' },
+      teen:      { title:'Height & weight', body:'They\'ll measure how tall you are and how much you weigh. Quick. They use these numbers with your blood results later.' },
+      middle:    { title:'Height & weight', body:'A nurse will measure how tall you are and how much you weigh. It takes about one minute.' },
+      young:     { title:'How tall are you?', body:'The nurse will see how tall you are. They will see how much you weigh. It is quick.' },
+    },
+    'iv-place': {
+      caregiver: { title:'IV placement', body:'A nurse will clean a spot on your child\'s arm, then place an <span class="term" data-term="iv">IV</span> — a tiny, soft tube. There\'s a brief pinch. Once it\'s in, the same line is used for every medicine and every blood draw, so this is the only needle stick of the day.' },
+      teen:      { title:'Getting the IV in', body:'A nurse cleans your arm and puts in an <span class="term" data-term="iv">IV</span> — a small soft tube. You feel a quick pinch. After this, no more needles. Every blood draw and every medicine goes through this same line.' },
+      middle:    { title:'The IV goes in', body:'A nurse will clean your arm. Then they will put in an <span class="term" data-term="iv">IV</span>. An IV is a small, soft tube. You feel a quick pinch. After this, there are no more pokes. Everything goes through the IV.' },
+      young:     { title:'A tiny tube in your arm', body:'The nurse will wipe your arm. Then they put in a tiny tube. It is called an <span class="term" data-term="iv">IV</span>. You feel one quick pinch. Then no more pokes.' },
+    },
+    'draw-1': {
+      caregiver: { title:'First blood draw (baseline)', body:'The nurse takes the first blood sample through the IV — no extra stick. This is the baseline reading, before any medicines.' },
+      teen:      { title:'First blood draw', body:'The nurse takes a little blood through the IV. No new poke. This is the baseline — what your body looks like before any medicine.' },
+      middle:    { title:'First blood draw', body:'The nurse takes a little blood from the IV. There is no new poke. This is the first sample, before any medicine.' },
+      young:     { title:'A little blood', body:'The nurse takes a tiny bit of blood from the IV. No poke. Just from the tube.' },
+    },
+    'arg-start': {
+      caregiver: { title:'Arginine begins', body:'<span class="term" data-term="arginine">Arginine</span> starts flowing through the IV. It helps the body release growth hormone so the test can measure it. The infusion runs for about 30 minutes.' },
+      teen:      { title:'Arginine starts', body:'A medicine called <span class="term" data-term="arginine">arginine</span> starts going in through the IV. It tells your body to release growth hormone so we can measure it. Runs about 30 minutes.' },
+      middle:    { title:'Medicine #1: Arginine', body:'A medicine called <span class="term" data-term="arginine">arginine</span> goes in through the IV. It helps your body make growth hormone. It takes about 30 minutes.' },
+      young:     { title:'A helper medicine', body:'A medicine goes in through the IV. It helps your body make the growth hormone we are looking for. It takes a little while.' },
+    },
+    'draw-2': {
+      caregiver: { title:'Blood draw 2', body:'Another sample through the IV while the arginine is still infusing. The nurse will check in on how your child is feeling.' },
+      teen:      { title:'Blood draw 2', body:'Another sample, still through the IV. The nurse will ask how you\'re feeling.' },
+      middle:    { title:'Blood draw 2', body:'Another small blood sample from the IV. The nurse will ask how you feel.' },
+      young:     { title:'Tiny bit more blood', body:'Another tiny bit of blood from the tube. No poke.' },
+    },
+    'arg-end': {
+      caregiver: { title:'Arginine done — saline begins', body:'The arginine infusion is finished. The nurse switches to <span class="term" data-term="saline">saline</span> — a clean salt-water mix — to keep the IV line open for the rest of the test.' },
+      teen:      { title:'Arginine done', body:'Arginine is finished. Now the IV runs <span class="term" data-term="saline">saline</span> — clean salt water — just to keep the line open until the test ends.' },
+      middle:    { title:'Switching to saline', body:'The arginine is done. Now <span class="term" data-term="saline">saline</span> — a safe mix of salt and water — goes through the IV. This just keeps the tube open for the rest of the test.' },
+      young:     { title:'Now just water', body:'The medicine is done. Now safe water goes in the tube. This keeps it ready.' },
+    },
+    gluc: {
+      caregiver: { title:'Glucagon shot', body:'A small shot of <span class="term" data-term="glucagon">glucagon</span> goes into your child\'s shoulder. This is a separate quick injection — not through the IV. Like arginine, glucagon helps the body release growth hormone.' },
+      teen:      { title:'Glucagon shot in your shoulder', body:'You get a small shot of <span class="term" data-term="glucagon">glucagon</span> in your shoulder. It\'s a separate quick injection — not through the IV. It also helps your body make growth hormone.' },
+      middle:    { title:'Medicine #2: A shot in your shoulder', body:'You get one small shot of <span class="term" data-term="glucagon">glucagon</span> in your shoulder. It is one quick poke. It also helps your body make growth hormone.' },
+      young:     { title:'One small shot', body:'You get one small shot in your shoulder. One quick poke. Then done. It helps make the growth hormone.' },
+    },
+    'draw-3': {
+      caregiver: { title:'Blood draw 3', body:'Through the IV — no extra stick. Two and a half hours to go.' },
+      teen:      { title:'Blood draw 3', body:'Another small sample through the IV.' },
+      middle:    { title:'Blood draw 3', body:'Another blood sample through the IV. No poke.' },
+      young:     { title:'A little more blood', body:'A little blood from the tube. No poke.' },
+    },
+    'draw-4': {
+      caregiver: { title:'Blood draw 4', body:'Halfway-ish. Through the IV. Your child can rest, watch something, or play quietly.' },
+      teen:      { title:'Blood draw 4', body:'About halfway. Sample through the IV. You can rest or watch something.' },
+      middle:    { title:'Blood draw 4', body:'You are about halfway done. Another sample through the IV.' },
+      young:     { title:'You are halfway!', body:'You are halfway done. Just a little blood from the tube.' },
+    },
+    'draw-5': {
+      caregiver: { title:'Blood draw 5', body:'Through the IV. Two more draws and you\'re done.' },
+      teen:      { title:'Blood draw 5', body:'Two left. Sample through the IV.' },
+      middle:    { title:'Blood draw 5', body:'Two more left. Sample through the IV.' },
+      young:     { title:'Almost done!', body:'Just a little more. Two more times. From the tube.' },
+    },
+    'draw-6': {
+      caregiver: { title:'Blood draw 6 — the last one', body:'The final sample. Through the IV. After this, the nurse will remove the IV and you\'re done.' },
+      teen:      { title:'Last blood draw', body:'The last one. Through the IV. After this they take the IV out.' },
+      middle:    { title:'The last blood draw', body:'This is the last one! Then the nurse takes the IV out.' },
+      young:     { title:'The very last one!', body:'The last one. Then the tube comes out. All done!' },
+    },
+    end: {
+      caregiver: { title:'Test complete \u2014 here\u2019s what happened', body:'The nurse removes the IV. Quick recap: there was only one needle stick (the IV), and every blood draw and the arginine ran through that one line; glucagon was the single shoulder shot. Six blood samples were taken over the three hours, and anything your child felt is saved in the symptom log. <b>Now:</b> the snack you brought is fine and normal activity is okay. <b>Results</b> usually take about 3 weeks \u2014 your care team will share them. If you have questions before then, call ' + SOURCE.phone + '.' },
+      teen:      { title:'You\u2019re done \u2014 quick recap', body:'The IV comes out now. Recap: one needle stick the whole time (the IV), six blood draws all through that line, two medicines (arginine through the IV, glucagon as one shoulder shot). <b>Now:</b> have your snack, normal stuff is fine. <b>Results</b> take about 3 weeks and your team will go over them with you.' },
+      middle:    { title:'All done! Let\u2019s look back', body:'The IV comes out now. Remember: you only got <b>one poke</b> the whole time \u2014 the IV \u2014 plus one small shoulder shot. You did <b>6</b> blood draws and they all came from the tube. <b>Now</b> you can have a snack and do normal things. The doctor gets your <b>results in about 3 weeks</b>.' },
+      young:     { title:'All done!! You did it!', body:'The tube comes out now. You were so brave! Remember \u2014 only <b>one</b> little poke the whole time. <b>Now</b> you can eat your snack and play like normal. Great job!' },
+    },
+  },
+};
+
+const GLOSSARY = {
+  iv:        { term:'IV', pron:'eye-vee', def:'A tiny, soft tube that goes into a vein. Once it\'s in, the IV is used to give medicine and to take blood samples — so there\'s only one needle stick, not many.' },
+  arginine:  { term:'Arginine', pron:'ARR-jih-neen', def:'A medicine that tells the body to make growth hormone. It goes in through the IV over about 30 minutes. It is not a steroid.' },
+  glucagon:  { term:'Glucagon', pron:'GLOO-kah-gon', def:'A medicine that also helps the body release growth hormone. It is given as one small shot in the shoulder.' },
+  saline:    { term:'Saline', pron:'SAY-leen', def:'A safe, clean mix of salt and water. It keeps the IV line open without being a medicine.' },
+  pituitary: { term:'Pituitary gland', pron:'pih-TOO-ih-tair-ee', def:'A small gland deep in the brain. It makes growth hormone and several other hormones that help the body grow and develop.' },
+  gh:        { term:'Growth hormone (GH)', pron:'', def:'A hormone made by the pituitary gland that helps children grow and develop. This test measures how much GH the body can make on demand.' },
+};
+
+const TIERS = {
+  1: { name:'Tier 1 · expected', color:'#8b5e08' },
+  2: { name:'Tier 2 · alert the nurse', color:'#c4530a' },
+  3: { name:'Tier 3 · escalate now',  color:'#8a1a3a' },
+};
+
+const TREE = {
+  1: {
+    cta:        'I\'ll mention it at the next blood draw',
+    secondary:  'Distract — show me something to do',
+    actions: [
+      'This kind of feeling is common during the test.',
+      'It usually passes within a few minutes.',
+      'Log it here so the nurse can see it on the next round.',
+      'Stay seated. Slow breaths in and out can help.',
+    ],
+  },
+  2: {
+    cta:        'Press the call button now',
+    secondary:  'Open the door for the nurse',
+    actions: [
+      'Call the nurse over now — don\'t wait for the next blood draw.',
+      'Stay seated. Don\'t stand up.',
+      'The nurse will check vitals and may slow or pause the medicine.',
+      'You did the right thing logging this.',
+    ],
+  },
+  3: {
+    cta:        'Get the nurse — now',
+    secondary:  'Open the door & call out',
+    actions: [
+      'Get the nurse immediately. Do not wait.',
+      'If the nurse is not in the room, press the call button.',
+      'If no response, open the door and call for help.',
+      'Stay with your child. Keep them lying down.',
+    ],
+  },
+};
+
+/* ============================================================
+   Helpers
+   ============================================================ */
+
+const minToClock = (min) => {
+  const m = Math.floor(min);
+  const h = Math.floor(m / 60);
+  const mm = m % 60;
+  return `${h}:${mm.toString().padStart(2,'0')}`;
+};
+
+const findCurrentEvent = (elapsedMin) => {
+  let current = EVENTS[0];
+  for (const e of EVENTS) {
+    if (e.tMin <= elapsedMin) current = e;
+    else break;
+  }
+  return current;
+};
+
+const speak = (text, onEnd) => {
+  if (!('speechSynthesis' in window)) { onEnd && onEnd(); return null; }
+  window.speechSynthesis.cancel();
+  // Strip HTML for TTS
+  const clean = text.replace(/<[^>]+>/g, '').replace(/\s+/g,' ').trim();
+  const u = new SpeechSynthesisUtterance(clean);
+  u.rate = 0.9;   // E1 · slightly slower, clearer pace for spoken plain-language narration
+  u.pitch = 1.0;
+  if (onEnd) u.onend = onEnd;
+  window.speechSynthesis.speak(u);
+  return u;
+};
+
+const stopSpeak = () => { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); };
+
+/* ============================================================
+   Component: Onboarding
+   ============================================================ */
+
+const Onboarding = ({ onComplete }) => {
+  const [step, setStep] = useState(0);
+  const [role, setRole]   = useState(null);
+  const [age, setAge]     = useState(null);
+  const [first, setFirst] = useState(null);
+
+  useEffect(() => {
+    if (role && (role === 'caregiver' || age) && first !== null) {
+      onComplete({ role, age: role === 'caregiver' ? null : age, firstTime: first });
+    }
+  }, [role, age, first, onComplete]);
+
+  const totalSteps = role === 'caregiver' ? 2 : 3;
+  const currentStepIdx = step;
+
+  const goBack = () => setStep(s => Math.max(0, s - 1));
+
+  const pickRole = (r) => {
+    setRole(r);
+    if (r === 'caregiver') setStep(1);
+    else setStep(1);
+  };
+
+  return (
+    <div className="onb">
+      <div className="onb-step-indicator">
+        {[...Array(totalSteps)].map((_,i) => (
+          <div key={i} className={`onb-step-dot ${i < currentStepIdx ? 'done' : i === currentStepIdx ? 'current' : ''}`}/>
+        ))}
+      </div>
+
+      {step > 0 && <button className="onb-back" onClick={goBack}>← BACK</button>}
+
+      {step === 0 && (
+        <>
+          <p className="onb-eyebrow">Step 1 of {totalSteps} · Who's using this</p>
+          <h1 className="onb-title">Who is taking <em>this module?</em></h1>
+          <p className="onb-sub">We change how the words and pictures work depending on who's reading. You can change this later.</p>
+          <div className="onb-options">
+            <button className="onb-opt" onClick={() => pickRole('child')}>
+              <span className="onb-opt-icon">A</span>
+              <span className="onb-opt-body">
+                <span className="onb-opt-title">The child / patient</span>
+                <span className="onb-opt-sub">First-person, age-adapted words and pictures</span>
+              </span>
+            </button>
+            <button className="onb-opt" onClick={() => pickRole('caregiver')}>
+              <span className="onb-opt-icon">B</span>
+              <span className="onb-opt-body">
+                <span className="onb-opt-title">A caregiver</span>
+                <span className="onb-opt-sub">Clinical vocabulary, logistics, and timing</span>
+              </span>
+            </button>
+            <button className="onb-opt" onClick={() => pickRole('both')}>
+              <span className="onb-opt-icon">C</span>
+              <span className="onb-opt-body">
+                <span className="onb-opt-title">Both — we're doing this together</span>
+                <span className="onb-opt-sub">Show me both views side by side</span>
+              </span>
+            </button>
+          </div>
+        </>
+      )}
+
+      {step === 1 && role !== 'caregiver' && (
+        <>
+          <p className="onb-eyebrow">Step 2 of {totalSteps} · Age</p>
+          <h1 className="onb-title">How old is <em>the child?</em></h1>
+          <p className="onb-sub">This changes the words, the pictures, and how much detail shows up at each step.</p>
+          <div className="onb-options">
+            <button className="onb-opt" onClick={() => { setAge('young'); setStep(2); }}>
+              <span className="onb-opt-icon">·</span>
+              <span className="onb-opt-body">
+                <span className="onb-opt-title">4 to 7 years old</span>
+                <span className="onb-opt-sub">Simple words, friendly icons, parent as co-pilot</span>
+              </span>
+            </button>
+            <button className="onb-opt" onClick={() => { setAge('middle'); setStep(2); }}>
+              <span className="onb-opt-icon">··</span>
+              <span className="onb-opt-body">
+                <span className="onb-opt-title">8 to 12 years old</span>
+                <span className="onb-opt-sub">Step-by-step, more anatomy, real choices</span>
+              </span>
+            </button>
+            <button className="onb-opt" onClick={() => { setAge('teen'); setStep(2); }}>
+              <span className="onb-opt-icon">···</span>
+              <span className="onb-opt-body">
+                <span className="onb-opt-title">13 years and up</span>
+                <span className="onb-opt-sub">Near-adult vocabulary, autonomy-respecting</span>
+              </span>
+            </button>
+          </div>
+        </>
+      )}
+
+      {((step === 1 && role === 'caregiver') || step === 2) && (
+        <>
+          <p className="onb-eyebrow">Step {totalSteps} of {totalSteps} · Familiarity</p>
+          <h1 className="onb-title">First <em>GH stim test?</em></h1>
+          <p className="onb-sub">First-timers get the full walkthrough. Returning families get a faster refresher with the parts that usually trip people up.</p>
+          <div className="onb-options">
+            <button className="onb-opt" onClick={() => setFirst(true)}>
+              <span className="onb-opt-icon">✓</span>
+              <span className="onb-opt-body">
+                <span className="onb-opt-title">First time</span>
+                <span className="onb-opt-sub">Full walkthrough of each phase</span>
+              </span>
+            </button>
+            <button className="onb-opt" onClick={() => setFirst(false)}>
+              <span className="onb-opt-icon">↻</span>
+              <span className="onb-opt-body">
+                <span className="onb-opt-title">We've done one before</span>
+                <span className="onb-opt-sub">Refresher mode — skip what you already know</span>
+              </span>
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
+/* ============================================================
+   Component: Status bar + demo bar + voice bar
+   ============================================================ */
+
+const StatusBar = ({ elapsedMin, currentEvent }) => (
+  <div className="status">
+    <div className="status-left">
+      <span className="status-phase">Phase 4 · During the test</span>
+      <span className="status-step">{currentEvent.label}</span>
+    </div>
+    <div className="status-right">
+      <span className="status-clock">{minToClock(elapsedMin)} / 3:00</span>
+      <span className="status-meta">{Math.max(0, Math.floor(TOTAL_MIN - elapsedMin))} min left</span>
+    </div>
+  </div>
+);
+
+const DemoBar = ({ speed, setSpeed, paused, setPaused }) => (
+  <div className="demobar">
+    <span className="demobar-tag">DEMO</span>
+    <span>Real test = 3 hours</span>
+    <div className="demobar-controls">
+      <button className={`demobar-btn ${speed === 30 ? 'active':''}`} onClick={() => setSpeed(30)}>30×</button>
+      <button className={`demobar-btn ${speed === 60 ? 'active':''}`} onClick={() => setSpeed(60)}>60×</button>
+      <button className={`demobar-btn ${speed === 180 ? 'active':''}`} onClick={() => setSpeed(180)}>180×</button>
+      <button className={`demobar-btn ${paused ? 'active':''}`} onClick={() => setPaused(p => !p)}>{paused ? '▶' : '⏸'}</button>
+    </div>
+  </div>
+);
+
+const VoiceBar = ({ effectiveVoice, voiceOverride, setVoiceOverride, textScale, setTextScale }) => (
+  <div className="voicebar">
+    <span className="voicebar-label">Voice:</span>
+    {['caregiver','teen','middle','young'].map(v => (
+      <button
+        key={v}
+        className={`voicebar-btn ${effectiveVoice === v ? 'active' : ''}`}
+        onClick={() => setVoiceOverride(v === voiceOverride ? null : v)}>
+        {v === 'caregiver' ? 'Caregiver' : v === 'teen' ? 'Teen 13+' : v === 'middle' ? 'Age 8–12' : 'Age 4–7'}
+      </button>
+    ))}
+    <div className="fs-control">
+      <span className="fs-label">Text</span>
+      <button className={`fs-btn sm ${textScale === 1 ? 'active':''}`} onClick={() => setTextScale(1)} aria-label="Default text size" title="Default text size">A</button>
+      <button className={`fs-btn md ${textScale === 1.15 ? 'active':''}`} onClick={() => setTextScale(1.15)} aria-label="Larger text" title="Larger text">A</button>
+      <button className={`fs-btn lg ${textScale === 1.32 ? 'active':''}`} onClick={() => setTextScale(1.32)} aria-label="Largest text" title="Largest text">A</button>
+    </div>
+  </div>
+);
+
+/* ============================================================
+   Component: Timeline
+   ============================================================ */
+
+const Timeline = ({ elapsedMin, onTickClick }) => {
+  const pct = Math.min(100, (elapsedMin / TOTAL_MIN) * 100);
+
+  // Major ticks: every 30 min + the 6 blood draws (which already land on 15/30/60/90/120/150)
+  const ticks = EVENTS.filter(e => e.type === 'draw');
+
+  return (
+    <div className="tl-section">
+      <div className="section-head">PROCEDURE TIMELINE</div>
+      <div className="tl-card">
+        <div className="tl-meta">
+          <span>0:00 START</span>
+          <span>{pct.toFixed(0)}% COMPLETE</span>
+          <span>3:00 END</span>
+        </div>
+        <div className="tl-track">
+          <div className="tl-line"/>
+          <div className="tl-line-fill" style={{width: `${pct}%`}}/>
+          <div className="tl-pointer" style={{left: `${pct}%`}}>NOW</div>
+          {ticks.map(t => {
+            const left = (t.tMin / TOTAL_MIN) * 100;
+            const status = t.tMin < elapsedMin - 0.5 ? 'done'
+                         : Math.abs(t.tMin - elapsedMin) < 1.5 ? 'active'
+                         : 'upcoming';
+            return (
+              <div
+                key={t.id}
+                className={`tl-tick ${status}`}
+                style={{left: `${left}%`}}
+                onClick={() => onTickClick && onTickClick(t)}>
+                <div className="tl-tick-dot"/>
+                <div className="tl-tick-label">DRAW {t.n}</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ============================================================
+   Component: Current step card
+   ============================================================ */
+
+const StepCard = ({ event, voice, onTermClick }) => {
+  const [speaking, setSpeaking] = useState(false);
+  const content = V.step[event.id]?.[voice] || { title: event.label, body: '' };
+
+  const handleListen = () => {
+    if (speaking) { stopSpeak(); setSpeaking(false); return; }
+    setSpeaking(true);
+    speak(`${content.title}. ${content.body}`, () => setSpeaking(false));
+  };
+
+  // Handle .term clicks via delegation
+  const bodyRef = useRef(null);
+  useEffect(() => {
+    const el = bodyRef.current;
+    if (!el) return;
+    const onClick = (e) => {
+      if (e.target.classList && e.target.classList.contains('term')) {
+        const t = e.target.getAttribute('data-term');
+        if (t && onTermClick) onTermClick(t);
+      }
+    };
+    el.addEventListener('click', onClick);
+    return () => el.removeEventListener('click', onClick);
+  }, [onTermClick, content.body]);
+
+  return (
+    <div className="step">
+      <button
+        className={`listen ${speaking ? 'speaking':''}`}
+        onClick={handleListen}
+        title="Listen aloud"
+        aria-label="Read this aloud">
+        {speaking ? '◼' : '◀)'}
+      </button>
+      <div className="step-eyebrow">RIGHT NOW</div>
+      <h2 className="step-title">{content.title}</h2>
+      <div
+        className="step-body"
+        ref={bodyRef}
+        dangerouslySetInnerHTML={{__html: content.body}}
+      />
+    </div>
+  );
+};
+
+/* ============================================================
+   Component: Logged symptoms list
+   ============================================================ */
+
+const SymptomLog = ({ log }) => {
+  if (!log.length) return null;
+  return (
+    <div className="log">
+      <div className="log-head"><span>SYMPTOM LOG</span><span>{log.length} ENTRY{log.length !== 1 ? 'IES' : ''}</span></div>
+      {log.map((entry, i) => {
+        const sx = SYMPTOMS.find(s => s.id === entry.symptomId);
+        return (
+          <div className="log-row" key={i}>
+            <div className="log-row-left">
+              <span className="log-row-time">{minToClock(entry.atMin)}</span>
+              <span>{sx?.emoji}</span>
+              <span className="log-row-symptom">{sx?.name}</span>
+            </div>
+            <span className={`log-tier t${sx?.tier}`}>T{sx?.tier}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+/* ============================================================
+   Component: Sheets
+   ============================================================ */
+
+const Sheet = ({ onClose, children }) => (
+  <div className="sheet-backdrop" onClick={onClose}>
+    <div className="sheet" onClick={e => e.stopPropagation()}>
+      <div className="sheet-handle"/>
+      <button className="sheet-close" onClick={onClose}>×</button>
+      {children}
+    </div>
+  </div>
+);
+
+const SymptomCheckSheet = ({ onClose, onLog, onFeelGood }) => (
+  <Sheet onClose={onClose}>
+    <div className="sheet-eyebrow">CHECK-IN</div>
+    <h2 className="sheet-title">How are you feeling right now?</h2>
+    <p className="sheet-body">Tap whatever fits. You can tap more than one. We'll route what to do next based on what you pick.</p>
+
+    <div className="sx-grid">
+      {SYMPTOMS.map(sx => (
+        <button key={sx.id} className={`sx-btn t${sx.tier}`} onClick={() => onLog(sx)}>
+          <span className="sx-btn-emoji">{sx.emoji}</span>
+          <span className="sx-btn-name">{sx.name}</span>
+          <span className="sx-btn-tier">{TIERS[sx.tier].name.split('·')[0].trim()}</span>
+        </button>
+      ))}
+    </div>
+
+    <button className="sx-feel-good" onClick={onFeelGood}>
+      <div className="sx-feel-good-title">I feel okay 🌤</div>
+      <div className="sx-feel-good-sub">Nothing to report this round</div>
+    </button>
+  </Sheet>
+);
+
+const DecisionTreeSheet = ({ symptom, onClose, onAck }) => {
+  const tier = symptom.tier;
+  const tree = TREE[tier];
+  return (
+    <Sheet onClose={onClose}>
+      <div className={`tree-tier-bar t${tier}`}>{TIERS[tier].name}</div>
+      <h2 className="sheet-title">{symptom.emoji} {symptom.name}</h2>
+      <p className="sheet-body">
+        {tier === 1 && 'This is a common feeling during the test. Here\'s what to do:'}
+        {tier === 2 && 'Don\'t wait for the next blood draw — this needs the nurse now.'}
+        {tier === 3 && 'This needs help immediately. Don\'t wait.'}
+      </p>
+
+      <div className="tree-actions">
+        {tree.actions.map((a, i) => (
+          <div className="tree-action-row" key={i}>
+            <span className="tree-action-num">{(i+1).toString().padStart(2,'0')}</span>
+            <span className="tree-action-text">{a}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="tree-cta-row">
+        <button className={`tree-cta tree-cta-primary ${tier===3?'t3':''}`} onClick={onAck}>{tree.cta}</button>
+        <button className="tree-cta tree-cta-secondary" onClick={onClose}>{tree.secondary}</button>
+      </div>
+    </Sheet>
+  );
+};
+
+const MedicationSheet = ({ onClose, voice }) => {
+  const cv = voice === 'caregiver';
+  return (
+    <Sheet onClose={onClose}>
+      <div className="sheet-eyebrow">TWO MEDICATIONS</div>
+      <h2 className="sheet-title">The medicines you'll get</h2>
+      <p className="sheet-body" style={{marginBottom:'1rem'}}>
+        {cv ? 'Both medications stimulate growth hormone release; together they give a fuller picture of the pituitary\'s response.'
+            : 'You get two medicines. Both tell your body to make growth hormone. The test measures how much your body can make.'}
+      </p>
+
+      <div className="med">
+        <div className="med-name">Arginine</div>
+        <div className="med-route">Through the IV · ~30 minutes</div>
+        <div className="med-what">{cv
+          ? 'An amino acid given as an IV infusion. It stimulates pituitary release of growth hormone.'
+          : 'A medicine that flows in slowly through the IV. It is not a steroid. It just asks your body to make growth hormone.'}</div>
+        <div className="med-feel">
+          <div className="med-feel-label">What it feels like</div>
+          {cv ? 'Most children feel nothing. Some report mild flushing or warmth at the IV site.'
+              : 'Most kids feel nothing. Some feel a little warm or flushed. That\'s normal.'}
+        </div>
+      </div>
+
+      <div className="med">
+        <div className="med-name">Glucagon</div>
+        <div className="med-route">One shot in the shoulder · seconds</div>
+        <div className="med-what">{cv
+          ? 'Given as a small intramuscular injection in the deltoid. Acts on the pituitary independently of arginine.'
+          : 'One small shot in your shoulder. Quick. It also asks your body to make growth hormone.'}</div>
+        <div className="med-feel">
+          <div className="med-feel-label">What it feels like</div>
+          {cv ? 'A brief pinch at the injection site. Mild nausea is the most common side effect.'
+              : 'A quick pinch. Some kids feel a little queasy afterward — that usually passes fast.'}
+        </div>
+      </div>
+    </Sheet>
+  );
+};
+
+const IVStubSheet = ({ onClose, voice }) => (
+  <Sheet onClose={onClose}>
+    <div className="sheet-eyebrow">IV PLACEMENT WALKTHROUGH</div>
+    <h2 className="sheet-title">What an IV is, before it happens</h2>
+
+    <div className="iv-stub">
+      <div className="iv-stub-label">PROTOTYPE STUB</div>
+      <div className="iv-stub-title">3D IV walkthrough · production asset</div>
+      <svg className="iv-stub-svg" viewBox="0 0 220 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="armg" x1="0" x2="1">
+            <stop offset="0%" stopColor="#f5d8c0"/>
+            <stop offset="100%" stopColor="#e6b89a"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="110" cy="60" rx="100" ry="22" fill="url(#armg)" stroke="#c4946f" strokeWidth="1"/>
+        <path d="M 30 60 Q 110 50 190 60" stroke="#5a8eb8" strokeWidth="2" fill="none" opacity=".5"/>
+        <circle cx="120" cy="56" r="3" fill="#c4530a"/>
+        <path d="M 120 56 L 160 30" stroke="#1a4a7a" strokeWidth="2"/>
+        <rect x="158" y="20" width="40" height="14" rx="3" fill="#deeaf5" stroke="#1a4a7a"/>
+        <text x="178" y="30" textAnchor="middle" fontFamily="DM Mono" fontSize="8" fill="#1a4a7a">IV LINE</text>
+      </svg>
+      <div className="iv-stub-body" style={{marginTop:'.85rem'}}>
+        In production: a 3D rotatable arm model with insertion animation, age-adapted (cartoon for 4–7, anatomical for teens), with the cold-wipe → pinch → done sequence.
+      </div>
+    </div>
+
+    <p className="sheet-body" style={{marginTop:'1rem'}}>
+      {voice === 'young' ? 'The nurse wipes your arm. It feels cold. Then one quick pinch. Then the tiny tube is in. No more pokes after this.'
+       : voice === 'middle' ? 'A nurse cleans your arm with a wipe. It feels cold for a second. Then a quick pinch — that\'s the IV going in. The tube is tiny and soft. Every blood draw and medicine for the rest of the test goes through this same tube.'
+       : voice === 'teen' ? 'They clean the skin with an antiseptic wipe (cold), then slide a tiny flexible catheter into a vein. One pinch. After it\'s in, nothing else feels like a needle — every draw and infusion comes through this same line.'
+       : 'A nurse will clean the antecubital site and place a peripheral IV. Expect one brief stick. The line is used for both infusion and serial blood sampling for the duration of the test.'}
+    </p>
+  </Sheet>
+);
+
+const GlossarySheet = ({ termId, onClose }) => {
+  const [speaking, setSpeaking] = useState(null);
+  const items = termId ? [GLOSSARY[termId]].filter(Boolean) : Object.values(GLOSSARY);
+  const handleListen = (item) => {
+    if (speaking === item.term) { stopSpeak(); setSpeaking(null); return; }
+    setSpeaking(item.term);
+    speak(`${item.term}. ${item.def}`, () => setSpeaking(null));
+  };
+  return (
+    <Sheet onClose={onClose}>
+      <div className="sheet-eyebrow">GLOSSARY</div>
+      <h2 className="sheet-title">{termId ? items[0]?.term : 'All terms'}</h2>
+      <div className="gloss-list">
+        {items.map(g => (
+          <div className="gloss-item" key={g.term}>
+            <button className="gloss-listen" onClick={() => handleListen(g)}>{speaking === g.term ? '◼' : '◀)'}</button>
+            <div className="gloss-term">{g.term}</div>
+            {g.pron && <div className="gloss-pron">{g.pron}</div>}
+            <div className="gloss-def">{g.def}</div>
+          </div>
+        ))}
+      </div>
+    </Sheet>
+  );
+};
+
+const ActivitySheet = ({ onClose, age }) => {
+  const activities = age === 'young' ? [
+    { e:'🎨', t:'Coloring page', s:'Quiet, one-handed, hospital-friendly' },
+    { e:'📚', t:'Picture book', s:'Caregiver can read aloud' },
+    { e:'🧸', t:'Find the stuffie\'s nose', s:'Slow body-awareness game' },
+    { e:'🎵', t:'Calm music', s:'Headphones if you brought them' },
+  ] : age === 'middle' ? [
+    { e:'📱', t:'Easy phone games', s:'Avoid anything that needs both arms' },
+    { e:'📚', t:'A book or comic', s:'Bring one you already love' },
+    { e:'🎵', t:'Music or audiobook', s:'Headphones recommended' },
+    { e:'🎬', t:'A show or movie', s:'Pick something familiar' },
+  ] : [
+    { e:'🎬', t:'Something to watch', s:'Show, movie, longer videos' },
+    { e:'🎵', t:'Music or podcast', s:'Headphones recommended' },
+    { e:'📱', t:'Phone games', s:'One-handed games work best' },
+    { e:'📚', t:'Reading or studying', s:'Bring something you\'ll actually do' },
+  ];
+  return (
+    <Sheet onClose={onClose}>
+      <div className="sheet-eyebrow">DURING THE WAITS</div>
+      <h2 className="sheet-title">Things to do between blood draws</h2>
+      <p className="sheet-body">There are 30-minute gaps between draws. One arm has to stay still — anything that works one-handed is good.</p>
+      <div className="act-list">
+        {activities.map((a,i) => (
+          <div className="act-item" key={i}>
+            <span className="act-emoji">{a.e}</span>
+            <div className="act-body">
+              <div className="act-title">{a.t}</div>
+              <div className="act-sub">{a.s}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Sheet>
+  );
+};
+
+/* ============================================================
+   Component: Orientation card (E5) — brief, dismissible controls intro
+   ============================================================ */
+
+const OrientationCard = ({ onDismiss }) => (
+  <div className="orient">
+    <div className="orient-eyebrow">HOW THIS WORKS</div>
+    <div className="orient-title">A quick look before we start</div>
+    <div className="orient-row"><span>✦</span><span>The card up top always shows <b>what is happening right now</b>. It changes on its own as the test goes.</span></div>
+    <div className="orient-row"><span>◀)</span><span>Tap the <b>speaker</b> on any card to <b>hear it read aloud</b>.</span></div>
+    <div className="orient-row"><span>＿</span><span>Words with a <b>dotted underline</b> are explained — tap one to see what it means.</span></div>
+    <div className="orient-row"><span>A</span><span>Use <b>Text</b> (top right) to make the words <b>bigger</b>.</span></div>
+    <div className="orient-row"><span>◷</span><span>Tap the <b>timeline</b> or “All steps” to <b>look back or ahead</b> anytime.</span></div>
+    <div className="orient-row"><span>✦</span><span>Feeling something? Tap <b>“How I feel”</b> at the bottom — it tells you what to do.</span></div>
+    <button className="orient-dismiss" onClick={onDismiss}>Got it — start</button>
+  </div>
+);
+
+/* ============================================================
+   Component: About-this-information sheet (D4)
+   ============================================================ */
+
+const AboutSheet = ({ onClose }) => (
+  <Sheet onClose={onClose}>
+    <div className="sheet-eyebrow">ABOUT THIS INFORMATION</div>
+    <h2 className="sheet-title">Where this comes from</h2>
+    <div style={{marginTop:'1rem'}}>
+      <div className="about-row"><span className="about-label">Based on</span><span className="about-val">{SOURCE.basis}</span></div>
+      <div className="about-row"><span className="about-label">Reviewed by</span><span className="about-val">{SOURCE.reviewer}</span></div>
+      <div className="about-row"><span className="about-label">Last reviewed</span><span className="about-val">{SOURCE.reviewed}</span></div>
+      <div className="about-row"><span className="about-label">Provided by</span><span className="about-val">{SOURCE.org}</span></div>
+    </div>
+    <div className="about-note">
+      This module explains what usually happens. It is not medical advice and does not replace your care team. If anything here is different from what your nurse or doctor tells you, <b>follow your care team</b>. Questions? Call {SOURCE.phone}.
+    </div>
+  </Sheet>
+);
+
+/* ============================================================
+   Component: All-steps menu + single-step preview (D3)
+   ============================================================ */
+
+const AllStepsSheet = ({ elapsedMin, onPick, onClose }) => (
+  <Sheet onClose={onClose}>
+    <div className="sheet-eyebrow">ALL STEPS</div>
+    <h2 className="sheet-title">Look back or ahead</h2>
+    <p className="sheet-body">Tap any step to read it again or see what’s coming. This won’t change the test clock.</p>
+    <div className="steps-list">
+      {EVENTS.map(e => {
+        const status = e.tMin < elapsedMin - 0.5 ? 'done'
+                     : Math.abs(e.tMin - elapsedMin) < 5 ? 'now' : 'next';
+        return (
+          <button className="steps-row" key={e.id} onClick={() => onPick(e.id)}>
+            <span className="steps-row-time">{minToClock(e.tMin)}</span>
+            <span className="steps-row-label">{e.label}</span>
+            <span className={`steps-row-tag ${status}`}>{status === 'done' ? 'Done' : status === 'now' ? 'Now' : 'Soon'}</span>
+          </button>
+        );
+      })}
+    </div>
+  </Sheet>
+);
+
+const StepPreviewSheet = ({ eventId, voice, onClose, onTermClick }) => {
+  const [speaking, setSpeaking] = useState(false);
+  const ev = EVENTS.find(e => e.id === eventId);
+  const content = V.step[eventId]?.[voice] || { title: ev?.label || '', body: '' };
+  const bodyRef = useRef(null);
+  const handleListen = () => {
+    if (speaking) { stopSpeak(); setSpeaking(false); return; }
+    setSpeaking(true);
+    speak(`${content.title}. ${content.body}`, () => setSpeaking(false));
+  };
+  useEffect(() => {
+    const el = bodyRef.current;
+    if (!el) return;
+    const onClick = (e) => {
+      if (e.target.classList && e.target.classList.contains('term')) {
+        const t = e.target.getAttribute('data-term');
+        if (t && onTermClick) onTermClick(t);
+      }
+    };
+    el.addEventListener('click', onClick);
+    return () => el.removeEventListener('click', onClick);
+  }, [onTermClick, content.body]);
+  useEffect(() => () => stopSpeak(), []);
+  return (
+    <Sheet onClose={onClose}>
+      <button className={`listen ${speaking ? 'speaking':''}`} onClick={handleListen} aria-label="Read this aloud" title="Listen aloud" style={{top:'1.1rem', right:'3.4rem'}}>
+        {speaking ? '◼' : '◀)'}
+      </button>
+      <div className="sheet-eyebrow">STEP · {minToClock(ev?.tMin || 0)}</div>
+      <h2 className="sheet-title">{content.title}</h2>
+      <div className="sheet-body" ref={bodyRef} dangerouslySetInnerHTML={{__html: content.body}}/>
+    </Sheet>
+  );
+};
+
+/* ============================================================
+   Component: Main Phase 4 view
+   ============================================================ */
+
+const Phase4 = ({ onboarding }) => {
+  const [elapsedSec, setElapsedSec] = useState(0);   // seconds of test time
+  const [speed, setSpeed]           = useState(60);  // x times real-time
+  const [paused, setPaused]         = useState(false);
+  const [activeSheet, setActiveSheet] = useState(null);  // null | 'symptom' | 'tree' | 'med' | 'iv' | 'gloss' | 'act' | 'steps' | 'about' | 'preview'
+  const [sheetData, setSheetData]   = useState(null);
+  const [log, setLog]               = useState([]);
+  const [voiceOverride, setVoiceOverride] = useState(null);
+  const [textScale, setTextScale]   = useState(1);       // D1
+  const [showOrient, setShowOrient] = useState(true);    // E5
+  const [previewId, setPreviewId]   = useState(null);    // D3
+
+  // D1 · apply the chosen text scale live to all content via the --fs variable
+  useEffect(() => {
+    document.documentElement.style.setProperty('--fs', textScale);
+    return () => document.documentElement.style.setProperty('--fs', 1);
+  }, [textScale]);
+
+  // Determine effective voice
+  const effectiveVoice = voiceOverride
+    ?? (onboarding.role === 'caregiver' ? 'caregiver'
+      : onboarding.role === 'both' ? 'caregiver'  // both renders caregiver by default in this prototype
+      : onboarding.age === 'young' ? 'young'
+      : onboarding.age === 'middle' ? 'middle'
+      : 'teen');
+
+  // Tick the clock
+  useEffect(() => {
+    if (paused) return;
+    const id = setInterval(() => {
+      setElapsedSec(s => Math.min(TOTAL_MIN * 60, s + speed));
+    }, 1000);
+    return () => clearInterval(id);
+  }, [paused, speed]);
+
+  const elapsedMin = elapsedSec / 60;
+  const currentEvent = useMemo(() => findCurrentEvent(elapsedMin), [elapsedMin]);
+
+  // Open medication sheet automatically when arginine or glucagon event hits — only once per event
+  const lastAutoEvent = useRef(null);
+  useEffect(() => {
+    if (currentEvent.id === lastAutoEvent.current) return;
+    lastAutoEvent.current = currentEvent.id;
+    // No auto-popup in this build to avoid being intrusive — left as hook
+  }, [currentEvent.id]);
+
+  const openTerm = (t) => { setSheetData(t); setActiveSheet('gloss'); };
+
+  const onLogSymptom = (sx) => {
+    setLog(l => [...l, { atMin: elapsedMin, symptomId: sx.id }]);
+    setSheetData(sx);
+    setActiveSheet('tree');
+  };
+  const onFeelGood = () => { setActiveSheet(null); };
+
+  const ackTree = () => { setActiveSheet(null); };
+
+  // Stop speech on unmount
+  useEffect(() => () => stopSpeak(), []);
+
+  return (
+    <>
+      <StatusBar elapsedMin={elapsedMin} currentEvent={currentEvent}/>
+      <DemoBar speed={speed} setSpeed={setSpeed} paused={paused} setPaused={setPaused}/>
+      <VoiceBar effectiveVoice={effectiveVoice} voiceOverride={voiceOverride} setVoiceOverride={setVoiceOverride} textScale={textScale} setTextScale={setTextScale}/>
+
+      <div className="main">
+        {showOrient && <OrientationCard onDismiss={() => setShowOrient(false)}/>}
+
+        <Timeline elapsedMin={elapsedMin} onTickClick={(t) => { setPreviewId(t.id); setActiveSheet('preview'); }}/>
+
+        <StepCard event={currentEvent} voice={effectiveVoice} onTermClick={openTerm}/>
+
+        <SymptomLog log={log}/>
+
+        <div className="tl-section">
+          <div className="section-head">QUICK ACCESS</div>
+          <div className="stack" style={{gap:'.5rem'}}>
+            <button className="chip" style={{alignSelf:'flex-start'}} onClick={() => setActiveSheet('steps')}>
+              ◷ All steps — look back or ahead
+            </button>
+            <button className="chip" style={{alignSelf:'flex-start'}} onClick={() => setActiveSheet('med')}>
+              💊 About the two medications
+            </button>
+            <button className="chip" style={{alignSelf:'flex-start'}} onClick={() => setActiveSheet('iv')}>
+              🦾 IV placement walkthrough (3D)
+            </button>
+            <button className="chip" style={{alignSelf:'flex-start'}} onClick={() => { setSheetData(null); setActiveSheet('gloss'); }}>
+              📖 Glossary (all terms)
+            </button>
+            <button className="chip" style={{alignSelf:'flex-start'}} onClick={() => setActiveSheet('act')}>
+              🎨 Things to do during waits
+            </button>
+          </div>
+        </div>
+
+        <div className="srcline">
+          Based on the standard GH stim-test protocol · reviewed {SOURCE.reviewed}<br/>
+          <button onClick={() => setActiveSheet('about')}>About this information</button>
+        </div>
+      </div>
+
+      <div className="dock">
+        <button className="dock-btn primary" onClick={() => setActiveSheet('symptom')}>
+          <span className="dock-btn-icon">✦</span>
+          <span className="dock-btn-label">How I feel</span>
+        </button>
+        <button className="dock-btn" onClick={() => setActiveSheet('iv')}>
+          <span className="dock-btn-icon">🦾</span>
+          <span className="dock-btn-label">IV</span>
+        </button>
+        <button className="dock-btn" onClick={() => setActiveSheet('med')}>
+          <span className="dock-btn-icon">💊</span>
+          <span className="dock-btn-label">Meds</span>
+        </button>
+        <button className="dock-btn" onClick={() => { setSheetData(null); setActiveSheet('gloss'); }}>
+          <span className="dock-btn-icon">📖</span>
+          <span className="dock-btn-label">Words</span>
+        </button>
+      </div>
+
+      {activeSheet === 'symptom' && (
+        <SymptomCheckSheet
+          onClose={() => setActiveSheet(null)}
+          onLog={onLogSymptom}
+          onFeelGood={onFeelGood}/>
+      )}
+      {activeSheet === 'tree' && sheetData && (
+        <DecisionTreeSheet
+          symptom={sheetData}
+          onClose={() => setActiveSheet(null)}
+          onAck={ackTree}/>
+      )}
+      {activeSheet === 'med' && (
+        <MedicationSheet onClose={() => setActiveSheet(null)} voice={effectiveVoice}/>
+      )}
+      {activeSheet === 'iv' && (
+        <IVStubSheet onClose={() => setActiveSheet(null)} voice={effectiveVoice}/>
+      )}
+      {activeSheet === 'gloss' && (
+        <GlossarySheet termId={sheetData} onClose={() => setActiveSheet(null)}/>
+      )}
+      {activeSheet === 'act' && (
+        <ActivitySheet onClose={() => setActiveSheet(null)} age={effectiveVoice === 'caregiver' ? 'teen' : effectiveVoice}/>
+      )}
+      {activeSheet === 'steps' && (
+        <AllStepsSheet
+          elapsedMin={elapsedMin}
+          onClose={() => setActiveSheet(null)}
+          onPick={(id) => { setPreviewId(id); setActiveSheet('preview'); }}/>
+      )}
+      {activeSheet === 'preview' && previewId && (
+        <StepPreviewSheet
+          eventId={previewId}
+          voice={effectiveVoice}
+          onClose={() => setActiveSheet(null)}
+          onTermClick={openTerm}/>
+      )}
+      {activeSheet === 'about' && (
+        <AboutSheet onClose={() => setActiveSheet(null)}/>
+      )}
+    </>
+  );
+};
+
+/* ============================================================
+   App root
+   ============================================================ */
+
+const App = () => {
+  const [onboarding, setOnboarding] = useState(null);
+
+  if (!onboarding) {
+    return (
+      <div className="app">
+        <Onboarding onComplete={setOnboarding}/>
+      </div>
+    );
+  }
+
+  return (
+    <div className="app">
+      <Phase4 onboarding={onboarding}/>
+    </div>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

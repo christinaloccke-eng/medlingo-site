@@ -1,0 +1,26 @@
+# Netlify configuration for the MedLingo static site.
+# No build step — the site is plain HTML/CSS/JS served from the repo root.
+
+[build]
+  publish = "."
+  command = ""
+
+# Sensible security + caching headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# Pretty URL for the patient module: /gh-test  ->  /gh-test/index.html
+# (Netlify resolves this automatically, but we make it explicit.)
+[[redirects]]
+  from = "/gh-test"
+  to = "/gh-test/"
+  status = 301
