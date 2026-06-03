@@ -16,15 +16,15 @@
   --amber:      #F4B860;  --amber-deep:#9a6b10;  --amber-tint:#fdf0d8;
   --rose:       #e26d8a;  --rose-deep: #a83357;  --rose-tint: #fbe3ea;
 
-  /* Ink + cool paper neutrals */
-  --ink:        #0E1116;
-  --ink-mid:    #41474F;
-  --ink-light:  #6B7280;
-  --ink-faint:  #9AA1AC;
+  /* Ink + soft warm neutrals (warmed from brand paper for "clinical warmth") */
+  --ink:        #14120F;
+  --ink-mid:    #4A443D;
+  --ink-light:  #756C61;
+  --ink-faint:  #A69C8E;
 
-  --paper:      #F2F4F7;
-  --paper-2:    #E9EDF4;  /* section tint */
-  --line:       #DCE1EA;  /* borders */
+  --paper:      #F5F3EF;  /* warm off-white */
+  --paper-2:    #ECE7DE;  /* warm sand — section tint */
+  --line:       #E3DCD0;  /* warm borders */
   --card:       #ffffff;
 
   /* Type */
@@ -32,10 +32,10 @@
   --sans:  'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --label: 'DM Sans', system-ui, sans-serif;
 
-  /* Shadows (cool-tinted) */
-  --shadow-sm: 0 1px 3px rgba(14,17,22,.06);
-  --shadow-md: 0 8px 26px rgba(33,40,90,.10);
-  --shadow-lg: 0 20px 54px rgba(33,40,90,.18);
+  /* Shadows (warm-tinted) */
+  --shadow-sm: 0 1px 3px rgba(40,32,22,.06);
+  --shadow-md: 0 8px 26px rgba(50,40,28,.10);
+  --shadow-lg: 0 20px 54px rgba(50,40,28,.16);
 
   --maxw: 1140px;
   --radius: 18px;
@@ -141,7 +141,7 @@ h3 { font-size: 21px; }
   content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
   background:
     radial-gradient(58% 55% at 88% 10%, rgba(124,140,248,.16), transparent 70%),
-    radial-gradient(46% 48% at 4% 92%, rgba(63,207,177,.12), transparent 70%);
+    radial-gradient(48% 50% at 4% 92%, rgba(244,184,96,.20), transparent 70%);
 }
 .hero__grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center; }
 .hero h1 { font-size: clamp(40px, 6.4vw, 68px); line-height: 1.04; margin-bottom: 22px; }

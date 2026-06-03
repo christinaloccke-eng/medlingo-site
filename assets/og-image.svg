@@ -1,10 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="#F2F4F7"/>
+  <rect width="1200" height="630" fill="#F5F3EF"/>
   <rect width="1200" height="630" fill="url(#g)"/>
+  <rect width="1200" height="630" fill="url(#a)"/>
   <defs>
     <radialGradient id="g" cx="86%" cy="12%" r="60%">
       <stop offset="0%" stop-color="#7C8CF8" stop-opacity="0.20"/>
       <stop offset="100%" stop-color="#7C8CF8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="a" cx="6%" cy="94%" r="55%">
+      <stop offset="0%" stop-color="#F4B860" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#F4B860" stop-opacity="0"/>
     </radialGradient>
   </defs>
   <!-- mark -->
@@ -13,11 +18,11 @@
     <rect x="34.5" y="21" width="15" height="42" rx="4" fill="#fff"/>
     <rect x="21" y="34.5" width="42" height="15" rx="4" fill="#fff"/>
   </g>
-  <text x="194" y="146" font-family="Georgia, 'Newsreader', serif" font-size="44" font-weight="600" fill="#0E1116">Med<tspan fill="#7C8CF8" font-style="italic">Lingo</tspan></text>
-  <g font-family="Georgia, 'Newsreader', serif" fill="#0E1116" font-weight="600">
+  <text x="194" y="146" font-family="Georgia, 'Newsreader', serif" font-size="44" font-weight="600" fill="#14120F">Med<tspan fill="#5B66D6" font-style="italic">Lingo</tspan></text>
+  <g font-family="Georgia, 'Newsreader', serif" fill="#14120F" font-weight="600">
     <text x="90" y="330" font-size="78">Become fluent in</text>
     <text x="90" y="420" font-size="78">your <tspan font-style="italic" fill="#4856D4">own care.</tspan></text>
   </g>
-  <text x="90" y="506" font-family="'DM Sans', system-ui, sans-serif" font-size="27" fill="#41474F">XR-based health literacy &amp; patient education</text>
-  <text x="90" y="560" font-family="'DM Sans', system-ui, sans-serif" font-size="19" fill="#6B7280" letter-spacing="2" font-weight="600">GROUNDED IN RESEARCH · NO PHI</text>
+  <text x="90" y="506" font-family="'DM Sans', system-ui, sans-serif" font-size="27" fill="#4A443D">XR-based health literacy &amp; patient education</text>
+  <text x="90" y="560" font-family="'DM Sans', system-ui, sans-serif" font-size="19" fill="#756C61" letter-spacing="2" font-weight="600">GROUNDED IN RESEARCH · NO PHI</text>
 </svg>
