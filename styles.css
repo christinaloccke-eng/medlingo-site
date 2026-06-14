@@ -152,27 +152,28 @@ h3 { font-size: 21px; }
 .hero__trust span { display: inline-flex; align-items: center; gap: 7px; }
 .hero__trust span::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--mint); }
 
-/* Hero device mockup */
+/* Hero device — phone frame holding a live module preview */
 .device {
   justify-self: center;
   width: 100%; max-width: 320px;
   background: #11141b;
   border-radius: 36px; padding: 12px;
   box-shadow: var(--shadow-lg);
-  transform: rotate(1.4deg);
 }
 .device__screen { background: var(--paper); border-radius: 26px; overflow: hidden; }
-.device__bar { background: #1a1e29; color: #c3c9f5; font-family: var(--label); font-size: 11px; font-weight: 500; padding: 9px 18px; display: flex; justify-content: space-between; }
-.device__body { padding: 18px; }
-.lesson-kicker { font-family: var(--label); font-size: 10.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--lav-deep); margin-bottom: 10px; }
-.lesson-art { background: #11151f; border-radius: 14px; overflow: hidden; aspect-ratio: 4/3; }
-.lesson-art svg { width: 100%; height: 100%; display: block; }
-.lesson-callout { background: var(--lav-tint); border-left: 3px solid var(--lav); border-radius: 0 12px 12px 0; padding: 13px 15px; margin-top: 14px; }
-.lesson-callout .lbl { font-family: var(--label); font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--lav-deep); display: block; margin-bottom: 5px; }
-.lesson-callout p { font-size: 13.5px; line-height: 1.5; color: var(--ink); font-style: italic; font-family: var(--serif); }
-.lesson-meta { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
-.pill { font-family: var(--label); font-size: 10.5px; font-weight: 500; padding: 4px 10px; border-radius: 999px; background: var(--mint-tint); color: var(--mint-deep); }
-.pill--blue { background: var(--lav-soft); color: var(--lav-deep); }
+.device__bar { background: #1a1e29; color: #c3c9f5; font-family: var(--label); font-size: 11px; font-weight: 500; padding: 9px 18px; display: flex; justify-content: space-between; align-items: center; }
+.device__live { display: inline-flex; align-items: center; gap: 7px; color: #cdd5f7; }
+.device__live i { width: 6px; height: 6px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 0 3px rgba(63,207,177,.22); }
+
+/* Live preview viewport */
+.device__viewport { position: relative; aspect-ratio: 300 / 560; background: var(--paper); }
+.device__fallback { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+.device__frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: var(--paper); opacity: 0; transition: opacity .45s ease; }
+.device--live.frame-loaded .device__frame { opacity: 1; }
+.device--live.frame-failed .device__frame { display: none; }   /* reveal the static fallback */
+.device__open { display: block; text-align: center; margin-top: 14px; font-family: var(--label); font-size: 13px; font-weight: 600; color: var(--lav-deep); }
+.device__open:hover { color: var(--ink); }
+@media (prefers-reduced-motion: reduce) { .device__frame { transition: none; } }
 
 /* ===================== Problem ===================== */
 .problem .lead { max-width: 40em; }

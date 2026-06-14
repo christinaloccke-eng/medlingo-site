@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 1120" width="600" height="1120">
+  <defs>
+    <radialGradient id="heart" cx="42%" cy="36%" r="68%">
+      <stop offset="0%" stop-color="#F58A7E"/>
+      <stop offset="55%" stop-color="#E45F52"/>
+      <stop offset="100%" stop-color="#B83b34"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#E2E6FD"/>
+      <stop offset="100%" stop-color="#F5F3EF"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="600" height="1120" fill="#F5F3EF"/>
+
+  <!-- eyebrow -->
+  <text x="300" y="118" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-size="22" font-weight="600" letter-spacing="4" fill="#4856D4">PEDIATRIC · CARDIOLOGY</text>
+
+  <!-- title -->
+  <text x="300" y="200" text-anchor="middle" font-family="Georgia, 'Newsreader', serif" font-size="62" font-weight="600" fill="#14120F">Meet your</text>
+  <text x="300" y="270" text-anchor="middle" font-family="Georgia, 'Newsreader', serif" font-size="62" font-weight="600" font-style="italic" fill="#4856D4">heart.</text>
+
+  <!-- halo + heart -->
+  <circle cx="300" cy="520" r="205" fill="url(#halo)"/>
+  <path d="M300 645 C214 580 150 525 150 455 C150 410 188 384 226 389 C260 393 288 422 300 448 C312 422 340 393 374 389 C412 384 450 410 450 455 C450 525 386 580 300 645 Z" fill="url(#heart)"/>
+  <path d="M214 470 C206 450 214 430 234 428 C250 427 262 438 268 452" stroke="#F7B0A6" stroke-width="9" fill="none" stroke-linecap="round" opacity="0.8"/>
+
+  <!-- body -->
+  <text x="300" y="830" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-size="26" fill="#4A443D">A gentle, interactive walkthrough of</text>
+  <text x="300" y="868" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-size="26" fill="#4A443D">a new cardiac diagnosis, for families.</text>
+
+  <!-- button -->
+  <rect x="180" y="930" width="240" height="68" rx="34" fill="#4856D4"/>
+  <text x="300" y="973" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-size="26" font-weight="600" fill="#ffffff">Start the module ▸</text>
+
+  <!-- brand footer -->
+  <g transform="translate(252,1052)">
+    <rect width="26" height="26" rx="7" fill="#7C8CF8"/>
+    <rect x="10.5" y="6" width="5" height="14" rx="1.6" fill="#fff"/>
+    <rect x="6" y="10.5" width="14" height="5" rx="1.6" fill="#fff"/>
+  </g>
+  <text x="288" y="1071" font-family="Georgia, 'Newsreader', serif" font-size="24" font-weight="600" fill="#14120F">Med<tspan fill="#5B66D6" font-style="italic">Lingo</tspan></text>
+</svg>
