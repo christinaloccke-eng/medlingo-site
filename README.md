@@ -63,13 +63,14 @@ Netlify dashboard (Sites → *Add new site* → *Deploy manually*). Done.
 ## Photos
 
 Founder headshots live in `assets/`. The Team section is **self-healing**:
-each founder shows an initials monogram until a real photo is supplied.
+every avatar is already wired to a photo and falls back to an initials
+monogram (via `onerror="this.remove()"`) until that file exists.
 
 - **Christina:** ✅ `assets/christina.jpg` is in place and showing.
-- **Missy / Karen:** currently monograms ("MS" / "KC") by design. To add photos
-  later, drop `assets/missy.jpg` / `assets/karen.jpg` in and, in `index.html`,
-  add inside each `.avatar` div:
-  `<img src="assets/missy.jpg" alt="Melissa Skolnik" onerror="this.remove()">`
+- **Melissa & Karen:** slots are pre-wired to `assets/melissa.jpg` and
+  `assets/karen.jpg`. They currently show the "MS" / "KC" monograms — just
+  drop those two files into `assets/` (square crops, ~600px, like Christina's)
+  and the photos appear automatically. No code change needed.
 
 ## Adding more demo modules
 

@@ -218,6 +218,9 @@ h3 { font-size: 21px; }
 .demo-card__ext { margin-top: 6px; font-family: var(--label); font-size: 11px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-faint); }
 
 /* ===================== Team ===================== */
+.founder-story { max-width: 880px; margin: 0 0 52px; padding: 6px 0 6px 28px; border-left: 3px solid var(--lav); }
+.founder-story__quote { font-family: var(--serif); font-size: clamp(25px, 3.4vw, 38px); line-height: 1.22; font-weight: 600; letter-spacing: -.01em; color: var(--ink); margin: 0 0 18px; text-wrap: balance; }
+.founder-story__note { font-size: clamp(15px, 1.7vw, 17px); line-height: 1.6; color: var(--ink-mid); margin: 0; max-width: 62ch; }
 .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
 .member { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow-sm); }
 .avatar {
