@@ -1,6 +1,6 @@
 # MedLingo — marketing site
 
-A single-page, static marketing site for **MedLingo**, an XR-based, gamified
+A single-page, static marketing site for **MedLingo**, an interactive, gamified
 health-literacy and patient-education platform. Plain HTML, CSS, and vanilla
 JavaScript — no framework, no build step.
 
