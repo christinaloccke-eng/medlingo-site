@@ -1,4 +1,4 @@
-/* MedLingo — minimal vanilla JS: mobile nav + footer year */
+/* HealthLit — minimal vanilla JS: mobile nav + footer year */
 (function () {
   'use strict';
 

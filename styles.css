@@ -1,36 +1,40 @@
 /* =========================================================================
-   MedLingo — marketing site styles
-   Official brand: lavender (primary) + mint + amber on cool paper, with
-   Newsreader (headings) + DM Sans (everything else). Soft, rounded, generous
-   whitespace — "clinical warmth," kept warm with amber & pastel accents.
+   HealthLit — marketing site styles
+   Brand: clay (primary accent) + ink on warm cream paper, with
+   Playfair Display (display headings) + DM Sans (UI/body) + DM Mono (labels).
+   Soft, rounded, generous whitespace — "clinical warmth."
    ========================================================================= */
 
 :root {
-  /* Brand */
-  --lav:        #7C8CF8;  /* primary brand lavender — logo mark & decorative fills */
-  --lav-word:   #5B66D6;  /* brand "Lingo" on light backgrounds (per official lockup) */
-  --lav-deep:   #4856D4;  /* accessible variant — interactive text, buttons */
-  --lav-tint:   #eef0fe;
-  --lav-soft:   #e2e6fd;
-  --mint:       #3FCFB1;  --mint-deep: #147a66;  --mint-tint: #def5ef;
-  --amber:      #F4B860;  --amber-deep:#9a6b10;  --amber-tint:#fdf0d8;
-  --rose:       #e26d8a;  --rose-deep: #a83357;  --rose-tint: #fbe3ea;
+  /* HealthLit brand palette */
+  --ink:        #1D2A2F;  /* primary ink — headings & wordmark "Health" */
+  --clay:       #C2734E;  /* primary accent — wordmark "Lit", links, buttons */
+  --paper:      #F4EEE3;  /* warm cream background */
+  --card-tint:  #EDE5D6;  /* sand — tinted section surface */
+  --body:       #46403A;  /* body copy */
+  --muted:      #8A7E6C;  /* muted labels / captions */
+  --green:      #3F5C49;  /* secondary accent */
+  --gold:       #B8892C;  /* secondary accent */
 
-  /* Ink + soft warm neutrals (warmed from brand paper for "clinical warmth") */
-  --ink:        #14120F;
-  --ink-mid:    #4A443D;
-  --ink-light:  #756C61;
-  --ink-faint:  #A69C8E;
+  /* Legacy aliases mapped onto the HealthLit palette so existing rules
+     resolve without churn. No new colors are introduced. */
+  --lav: var(--clay);   --lav-word: var(--clay); --lav-deep: var(--clay);
+  --lav-tint: var(--card-tint); --lav-soft: var(--card-tint);
+  --mint: var(--green); --mint-deep: var(--green); --mint-tint: var(--card-tint);
+  --amber: var(--gold); --amber-deep: var(--gold); --amber-tint: var(--card-tint);
+  --rose: var(--clay);  --rose-deep: var(--clay); --rose-tint: var(--card-tint);
 
-  --paper:      #F5F3EF;  /* warm off-white */
-  --paper-2:    #ECE7DE;  /* warm sand — section tint */
-  --line:       #E3DCD0;  /* warm borders */
+  --ink-mid:    var(--body);
+  --ink-light:  var(--muted);
+  --ink-faint:  var(--muted);
+  --paper-2:    var(--card-tint);
+  --line:       #E0D5C4;  /* warm border tuned to cream */
   --card:       #ffffff;
 
   /* Type */
-  --serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
   --sans:  'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --label: 'DM Sans', system-ui, sans-serif;
+  --label: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Shadows (warm-tinted) */
   --shadow-sm: 0 1px 3px rgba(40,32,22,.06);
@@ -103,7 +107,7 @@ h3 { font-size: 21px; }
   white-space: nowrap;
 }
 .btn--primary { background: var(--lav-deep); color: #fff; box-shadow: var(--shadow-sm); }
-.btn--primary:hover { background: #3a46bc; transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn--primary:hover { background: var(--ink); transform: translateY(-1px); box-shadow: var(--shadow-md); }
 .btn--ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
 .btn--ghost:hover { border-color: var(--ink); transform: translateY(-1px); }
 .btn .arrow { transition: transform .15s ease; }
@@ -112,15 +116,16 @@ h3 { font-size: 21px; }
 /* ===================== Header / Nav ===================== */
 .site-header {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(242,244,247,.82);
+  background: rgba(244,238,227,.82);
   backdrop-filter: saturate(140%) blur(12px);
   border-bottom: 1px solid var(--line);
 }
 .nav { display: flex; align-items: center; justify-content: space-between; height: 70px; }
-.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); }
-.brand__mark { width: 30px; height: 30px; border-radius: 9px; display: block; }
-.brand__word { font-family: var(--serif); font-size: 24px; font-weight: 600; letter-spacing: -.015em; }
-.brand__word .lingo { color: var(--lav-word); font-style: italic; }
+.wordmark { display: inline-flex; align-items: baseline; font-family: var(--sans); font-size: 24px; font-weight: 600; letter-spacing: -.015em; text-decoration: none; line-height: 1; }
+.wm-health { color: #1D2A2F; }
+.wm-lit { color: #C2734E; }
+/* dark backgrounds (footer / dark bands): add class "wordmark--reversed" */
+.wordmark--reversed .wm-health, .wordmark--reversed .wm-lit { color: #F4EEE3; }
 .nav__links { display: flex; align-items: center; gap: 6px; }
 .nav__links a { color: var(--ink-mid); font-size: 15px; font-weight: 500; padding: 9px 14px; border-radius: 999px; transition: color .15s, background .15s; }
 .nav__links a:hover { color: var(--ink); background: var(--paper-2); }
@@ -140,8 +145,8 @@ h3 { font-size: 21px; }
 .hero::after {
   content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
   background:
-    radial-gradient(58% 55% at 88% 10%, rgba(124,140,248,.16), transparent 70%),
-    radial-gradient(48% 50% at 4% 92%, rgba(244,184,96,.20), transparent 70%);
+    radial-gradient(58% 55% at 88% 10%, rgba(194,115,78,.16), transparent 70%),
+    radial-gradient(48% 50% at 4% 92%, rgba(184,137,44,.18), transparent 70%);
 }
 .hero__grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center; }
 .hero h1 { font-size: clamp(40px, 6.4vw, 68px); line-height: 1.04; margin-bottom: 22px; }
@@ -161,9 +166,9 @@ h3 { font-size: 21px; }
   box-shadow: var(--shadow-lg);
 }
 .device__screen { background: var(--paper); border-radius: 26px; overflow: hidden; }
-.device__bar { background: #1a1e29; color: #c3c9f5; font-family: var(--label); font-size: 11px; font-weight: 500; padding: 9px 18px; display: flex; justify-content: space-between; align-items: center; }
-.device__live { display: inline-flex; align-items: center; gap: 7px; color: #cdd5f7; }
-.device__live i { width: 6px; height: 6px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 0 3px rgba(63,207,177,.22); }
+.device__bar { background: #1a1e29; color: #E8DFCF; font-family: var(--label); font-size: 11px; font-weight: 500; padding: 9px 18px; display: flex; justify-content: space-between; align-items: center; }
+.device__live { display: inline-flex; align-items: center; gap: 7px; color: #E8DFCF; }
+.device__live i { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(63,92,73,.30); }
 
 /* Live preview viewport */
 .device__viewport { position: relative; aspect-ratio: 300 / 560; background: var(--paper); }
@@ -196,7 +201,7 @@ h3 { font-size: 21px; }
 .i-lav   { background: var(--lav-soft);  color: var(--lav-deep); }
 .i-mint  { background: var(--mint-tint); color: var(--mint-deep); }
 .i-amber { background: var(--amber-tint);color: var(--amber-deep); }
-.i-rose  { background: var(--rose-tint); color: var(--rose-deep); }
+.i-rose  { background: var(--rose-tint); color: var(--ink); }
 
 /* ===================== Demos ===================== */
 .demo-group { margin-bottom: 38px; }
